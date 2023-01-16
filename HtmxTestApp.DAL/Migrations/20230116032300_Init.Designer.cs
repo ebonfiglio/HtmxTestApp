@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HtmxTestApp.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230115225303_Inital")]
-    partial class Inital
+    [Migration("20230116032300_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -162,13 +162,13 @@ namespace HtmxTestApp.DAL.Migrations
                     b.HasOne("HtmxTestApp.Shared.Entities.Team", "LosingTeam")
                         .WithMany("LosingGames")
                         .HasForeignKey("LosingTeamId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("HtmxTestApp.Shared.Entities.Team", "WinningTeam")
                         .WithMany("WinningGames")
                         .HasForeignKey("WinningTeamId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("LosingTeam");

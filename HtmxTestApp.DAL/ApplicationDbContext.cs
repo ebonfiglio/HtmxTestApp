@@ -23,13 +23,13 @@ namespace HtmxTestApp.DAL
                     .HasOne(p => p.WinningTeam)
                     .WithMany(t => t.WinningGames)
                     .HasForeignKey(m => m.WinningTeamId)
-                    .OnDelete(DeleteBehavior.SetNull);
+                    .OnDelete(DeleteBehavior.NoAction);
 
             builder.Entity<Game>()
                     .HasOne(p => p.LosingTeam)
                     .WithMany(t => t.LosingGames)
                     .HasForeignKey(m => m.LosingTeamId)
-                    .OnDelete(DeleteBehavior.SetNull);
+                    .OnDelete(DeleteBehavior.NoAction);
 
             base.OnModelCreating(builder);
         }

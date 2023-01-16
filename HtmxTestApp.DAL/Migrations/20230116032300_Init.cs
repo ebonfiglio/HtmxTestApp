@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HtmxTestApp.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class Inital : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -55,14 +55,12 @@ namespace HtmxTestApp.DAL.Migrations
                         name: "FK_Games_Teams_LosingTeamId",
                         column: x => x.LosingTeamId,
                         principalTable: "Teams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Games_Teams_WinningTeamId",
                         column: x => x.WinningTeamId,
                         principalTable: "Teams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(

@@ -159,13 +159,13 @@ namespace HtmxTestApp.DAL.Migrations
                     b.HasOne("HtmxTestApp.Shared.Entities.Team", "LosingTeam")
                         .WithMany("LosingGames")
                         .HasForeignKey("LosingTeamId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("HtmxTestApp.Shared.Entities.Team", "WinningTeam")
                         .WithMany("WinningGames")
                         .HasForeignKey("WinningTeamId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("LosingTeam");
