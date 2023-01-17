@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace HtmxTestApp.Domain.Services.Contracts
 {
-    public interface IGenericService<T, R, TEntity, TKey>
+    public interface IGenericService<TEntity, TKey>
     {
-        Task<R> GetAsync(TKey id);
-        Task<IEnumerable<R>> GetAllAsync();
-        Task<IEnumerable<R>> FindAsync(Expression<Func<TEntity, bool>> predicate);
-        Task<R> AddAsync(T request);
-        Task<R> UpdateAsync(T request);
+        Task<TEntity> GetAsync(TKey id);
+        Task<IEnumerable<TEntity>> GetAllAsync();
+        Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<TEntity> AddAsync(TEntity entity);
+        Task<TEntity> UpdateAsync(TEntity entity);
         Task DeleteAsync(TKey id);
     }
 }

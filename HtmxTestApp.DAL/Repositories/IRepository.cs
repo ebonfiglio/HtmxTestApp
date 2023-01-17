@@ -11,7 +11,7 @@ namespace HtmxTestApp.DAL.Repositories
     {
         Task<T> Add(T entity);
         Task<T> Update(T entity);
-        Task<T> Get(int id);
+        Task<T> Get(Guid id);
         Task<T> Get(string token);
         Task<T> GetByUserId(string userId);
         Task<IEnumerable<T>> All();

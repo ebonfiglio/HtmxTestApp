@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HtmxTestApp.Domain.Services.Contracts
 {
-    public interface IPlayerService : IGenericService<Player, Guid>
+    public interface ITeamService : IGenericService<Team, Guid>
     {
     }
 }

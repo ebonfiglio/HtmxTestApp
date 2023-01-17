@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HtmxTestApp.DAL\HtmxTestApp.DAL.csproj" />
+    <ProjectReference Include="..\HtmxTestApp.Shared\HtmxTestApp.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

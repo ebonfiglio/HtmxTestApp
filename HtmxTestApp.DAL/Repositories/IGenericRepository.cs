@@ -43,7 +43,7 @@ namespace HtmxTestApp.DAL.Repositories
                     .Where(predicate));
             }
 
-            public virtual async Task<T> Get(int id)
+            public virtual async Task<T> Get(Guid id)
             {
                 var item = await _context.Set<T>().FindAsync(id);
                 return item;
