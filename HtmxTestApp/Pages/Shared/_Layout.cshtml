@@ -4,25 +4,23 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - HtmxTestApp</title>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/grid.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/HtmxTestApp.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header style="border:solid black 1px">
-        <nav>
+        <nav class="nav-bar" style="border:solid black 1px">
             WBL
         </nav>
-        <section>
+        <section class="header-score-board" style="border:solid black 1px">
             Scores
         </section>
     </header>
     <main role="main" style="border:solid black 1px">
         @RenderBody()
     </main>
-    <aside>
-        side panel stuff
-    </aside>
-    <footer>
+    <footer style="border:solid black 1px">
         &copy; 2022 - HtmxTestApp - <a asp-area="" asp-page="/Privacy">Privacy</a>
     </footer>
 

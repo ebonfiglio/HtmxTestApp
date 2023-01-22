@@ -1,0 +1,48 @@
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    margin-right: 0em;
+    margin-left: 0em;
+    margin-top: 0em;
+    margin-bottom: 0em;
+    display: grid;
+    grid-template-columns: 1em repeat(10, 1fr) 1em;
+    grid-template-rows: repeat(12, 1fr);
+    grid-gap: 1em;
+}
+
+header,footer{
+    grid-column-start: 1;
+    grid-column-end: 13;
+}
+header {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 1fr 2fr;
+}
+    header > nav {
+        grid-column-start: 1;
+        grid-column-end: 13;
+        grid-row-start: 1;
+        grid-row-end: 2;
+    }
+    header > section {
+        grid-column-start: 1;
+        grid-column-end: 13;
+        grid-row-start: 2;
+    }
+
+footer{
+    grid-row-start: 12;
+    grid-row-end: 13
+}
+
+main {
+    grid-column-start: 2;
+    grid-column-end: 12;
+    grid-row-start: 2;
+    grid-row-end: 12;
+}
