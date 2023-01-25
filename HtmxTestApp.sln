@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HtmxTestApp.DAL", "HtmxTest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HtmxTestApp.Shared", "HtmxTestApp.Shared\HtmxTestApp.Shared.csproj", "{0C886770-FF0E-42C2-9457-C1B94C31EED3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmxTestApp.Domain", "HtmxTestApp.Domain\HtmxTestApp.Domain.csproj", "{445E9C1F-C00E-4C44-A891-B274F8879023}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HtmxTestApp.Domain", "HtmxTestApp.Domain\HtmxTestApp.Domain.csproj", "{445E9C1F-C00E-4C44-A891-B274F8879023}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

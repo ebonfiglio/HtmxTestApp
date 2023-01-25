@@ -1,4 +1,5 @@
 ﻿using HtmxTestApp.DAL;
+using HtmxTestApp.Domain.Services.Contracts;
 using HtmxTestApp.Shared.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HtmxTestApp.Domain.Services
 {
-    public class TeamService
+    public class TeamService : ITeamService
     {
         private readonly IUnitOfWork unitOfWork;
         public TeamService(IUnitOfWork unitOfWork)
@@ -27,13 +28,13 @@ namespace HtmxTestApp.Domain.Services
             await unitOfWork.TeamRepository.Delete(team);
         }
 
-        public async Task<IEnumerable<Team>> FindAsync(Expression<Func<Team, bool>> predicate)
+        public async Task<List<Team>> FindAsync(Expression<Func<Team, bool>> predicate)
         {
             IEnumerable<Team> result = await unitOfWork.TeamRepository.Find(predicate);
             return result.ToList();
         }
 
-        public async Task<IEnumerable<Team>> GetAllAsync()
+        public async Task<List<Team>> GetAllAsync()
         {
             IEnumerable<Team> teams = await unitOfWork.TeamRepository.All();
             return teams.ToList();

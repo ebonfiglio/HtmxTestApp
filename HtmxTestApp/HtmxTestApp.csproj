@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HtmxTestApp.DAL\HtmxTestApp.DAL.csproj" />
+    <ProjectReference Include="..\HtmxTestApp.Domain\HtmxTestApp.Domain.csproj" />
   </ItemGroup>
 
 </Project>
