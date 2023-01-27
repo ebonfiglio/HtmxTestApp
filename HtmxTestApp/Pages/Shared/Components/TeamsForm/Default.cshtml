@@ -2,7 +2,7 @@
 @model Team
 
 
-<form asp-action="@ViewBag.Method">
+<form method="post">
     <label asp-for="Name"></label>
     <input asp-for="Name" />
     <button type="submit">Save</button>
