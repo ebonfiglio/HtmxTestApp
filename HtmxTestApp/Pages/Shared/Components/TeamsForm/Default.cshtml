@@ -1,0 +1,9 @@
+﻿@using HtmxTestApp.Shared.Entities;
+@model Team
+
+
+<form asp-action="@ViewBag.Method">
+    <label asp-for="Name"></label>
+    <input asp-for="Name" />
+    <button type="submit">Save</button>
+</form>
