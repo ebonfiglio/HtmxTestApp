@@ -8,7 +8,7 @@ using static HtmxTestApp.DAL.Repositories.IGenericRepository;
 
 namespace HtmxTestApp.DAL.Repositories
 {
-    internal class TeamRepository : GenericRepository<Team>
+    public class TeamRepository : GenericRepository<Team>
     {
         public TeamRepository(ApplicationDbContext context) : base(context)
         {

@@ -6,12 +6,6 @@
 <h4>Teams</h4>
 <hr />
 <table cellpadding="0" cellspacing="0">
-    <tr>
-        <th>CustomerID</th>
-        <th>ContactName</th>
-        <th>City</th>
-        <th>Country</th>
-    </tr>
     @foreach (Team team in Model.Teams)
     {
         <tr>
@@ -19,4 +13,5 @@
             <td>Edit | Delete</td>
         </tr>
     }
+    <a asp-page="/Teams/Add">Add Team</a>
 </table>

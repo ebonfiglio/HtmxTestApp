@@ -1,4 +1,8 @@
 using HtmxTestApp.DAL;
+using HtmxTestApp.DAL.Repositories;
+using HtmxTestApp.Domain.Services;
+using HtmxTestApp.Domain.Services.Contracts;
+using HtmxTestApp.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 
@@ -16,6 +20,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<IRepository<Player>, PlayerRepository>();
+builder.Services.AddScoped<IRepository<Team>, TeamRepository>();
+builder.Services.AddScoped<IRepository<Game>, GameRepository>();
+builder.Services.AddScoped<IRepository<GameLog>, GameLogRepository>();
+builder.Services.AddScoped<IRepository<Position>, PositionRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IPlayerService, PlayerService>();
+builder.Services.AddScoped<ITeamService, TeamService>();
 
 var app = builder.Build();
 

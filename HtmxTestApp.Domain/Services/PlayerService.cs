@@ -29,13 +29,13 @@ namespace HtmxTestApp.Domain.Services
             await unitOfWork.PlayerRepository.Delete(player);
         }
 
-        public async Task<IEnumerable<Player>> FindAsync(Expression<Func<Player, bool>> predicate)
+        public async Task<List<Player>> FindAsync(Expression<Func<Player, bool>> predicate)
         {
             IEnumerable<Player> result =  await unitOfWork.PlayerRepository.Find(predicate);
             return result.ToList();
         }
 
-        public async Task<IEnumerable<Player>> GetAllAsync()
+        public async Task<List<Player>> GetAllAsync()
         {
             IEnumerable<Player> players = await unitOfWork.PlayerRepository.All();
             return players.ToList();
