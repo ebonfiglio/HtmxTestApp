@@ -24,7 +24,7 @@ namespace HtmxTestApp.Pages.Teams
             Team = team;
             if(!ModelState.IsValid) { return Page(); }
             Team newTeam = await teamService.AddAsync(team);
-            return RedirectToAction("/Team/Index"); 
+            return RedirectToPage("/Teams/Index"); 
         }
     }
 }

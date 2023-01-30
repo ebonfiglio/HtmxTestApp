@@ -15,9 +15,9 @@ namespace HtmxTestApp.Shared.Entities
 
         public string Name { get; set; }
 
-        public virtual IEnumerable<Player> Players { get; set; }
+        public virtual IEnumerable<Player>? Players { get; set; }
 
-        public virtual ICollection<Game> WinningGames { get; set; }
-        public virtual ICollection<Game> LosingGames { get; set; }
+        public virtual ICollection<Game>? WinningGames { get; set; }
+        public virtual ICollection<Game>? LosingGames { get; set; }
     }
 }
