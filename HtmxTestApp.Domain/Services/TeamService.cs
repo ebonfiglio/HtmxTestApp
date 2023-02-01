@@ -19,7 +19,9 @@ namespace HtmxTestApp.Domain.Services
         }
         public async Task<Team> AddAsync(Team entity)
         {
-            return await unitOfWork.TeamRepository.Add(entity);
+            Team team = await unitOfWork.TeamRepository.Add(entity);
+            await unitOfWork.SaveChanges();
+            return team;
         }
 
         public async Task DeleteAsync(Guid id)

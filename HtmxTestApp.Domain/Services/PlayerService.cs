@@ -20,7 +20,9 @@ namespace HtmxTestApp.Domain.Services
         }
         public async Task<Player> AddAsync(Player entity)
         {
-           return await unitOfWork.PlayerRepository.Add(entity); 
+            Player player = await unitOfWork.PlayerRepository.Add(entity);
+            await unitOfWork.SaveChanges();
+            return player;  
         }
 
         public async Task DeleteAsync(Guid id)
