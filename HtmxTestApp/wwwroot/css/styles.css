@@ -1,43 +1,54 @@
-﻿body {
+﻿html{
+    font-family:Arial, Helvetica, sans-serif;
+}
+body {
     color: #e6e6e6;
     background-color: #171717;
 }
-.nav-bar{
-    background-color:black;
+
+.nav-bar {
+    background-color: black;
 }
+
 .header-score-board {
     background-color: #091f2c;
 }
 
-a{
-    color:lightblue;
+a {
+    color: lightblue;
 }
 
-table, th, td {
+.btn {
+    letter-spacing: 2px;
+    border-radius: 5em;
+    display: inline-block;
+    font-weight: 600;
     text-align: center;
+    border: 0px solid transparent;
+    padding: .5rem .75rem;
+    background: linear-gradient(8deg, rgba(255,255,255,0.1) 0%, rgba(0,0,0,.4) 100%);
+    text-transform: uppercase;
+    text-decoration: none;
 }
-td{
-    padding-top:10px;
-    padding-bottom:10px;
-}
-
-th {
-    background-color: rgb(0,255,255, .1) !important;
-    font-size:20px !important;
-}
-
-table tr:nth-child(even) td {
-    background: rgba(255,255,255, 0.2);
-}
-
-tr:not(:first-child):hover {
-    background-color: rgb(164, 222, 247, 0.10);
+.btn:not(:disabled):not(.disabled) {
+    cursor: pointer;
 }
 
 
-table {
-    width: 100%;
-    background: rgba(255,255,255, 0.1);
-    border-radius: 5px;
-    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    .btn:not(:disabled):not(.disabled):hover {
+        background-image: linear-gradient(rgb(0 0 0/30%) 0 0);
+    }
+
+.btn-75w {
+    width: 100px;
+}
+
+.btn-edit {
+    background-color: #2A5D40 !important;
+    color: aliceblue;
+}
+
+.btn-delete {
+    background-color: #820808 !important;
+    color: aliceblue;
 }

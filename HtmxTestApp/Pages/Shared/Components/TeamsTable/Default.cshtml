@@ -15,7 +15,7 @@
     {
         <tr>
             <td>@team.Name</td>
-            <td>Edit | Delete</td>
+            <td><a asp-page="/Teams/Edit" asp-route-id="@team.Id" type="button" class="btn btn-edit btn-75w">Edit</a> | <a asp-page="/Teams/Edit" asp-route-id="@team.Id" type="button" class="btn btn-delete btn-75w">Delete</a></td>
         </tr>
     }
 </table> 
