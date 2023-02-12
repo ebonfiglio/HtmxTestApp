@@ -11,8 +11,9 @@ namespace HtmxTestApp.Shared.Entities
     public class Team
     {
         [Key]
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
         public virtual IEnumerable<Player>? Players { get; set; }

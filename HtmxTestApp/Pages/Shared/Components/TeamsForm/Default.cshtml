@@ -2,8 +2,8 @@
 @model Team
 
 
-<form method="post">
+<form asp-page="@(Model.Id is null ? "/Teams/Add" : "/Teams/Edit")" method="post">
     <label asp-for="Name"></label>
     <input asp-for="Name" />
-    <button type="submit">Save</button>
+    <button class="btn @(Model.Id is null ? "btn-primary" : "btn-edit") btn-75w" type="submit">@(Model.Id is null ? "Add" : "Edit")</button>
 </form>

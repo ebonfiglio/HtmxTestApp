@@ -7,18 +7,13 @@ namespace HtmxTestApp.Pages.Teams
 {
     public class EditModel : PageModel
     {
-        private ITeamService teamService;
-        public Team Team { get; set; } = new();
-        public EditModel(ITeamService teamService)
-        {
-            this.teamService = teamService;
-        }
+        public Guid TeamId { get; set; }
         public async Task<IActionResult> OnGet(string id)
         {
             bool isValid = Guid.TryParse(id, out Guid teamId);
-            if (!isValid) return Redirect("Error"); 
+            if (!isValid) return Redirect("Error");
+            TeamId = teamId;
 
-            Team = await teamService.GetAsync(teamId);
             return Page();
         }
     }

@@ -6,4 +6,13 @@
 <h4>Teams</h4>
 <hr />
 <vc:teams-table teams="@Model.Teams"></vc:teams-table>
-<a asp-page="/Teams/Add">Add Team</a>
+<br/>
+<a asp-page="/Teams/Add" type="button" class="btn btn-primary btn-150w">Add Team</a>
+<a href="#addDialog" type="button" class="btn btn-primary btn-150w">Add with Dialog</a>
+
+<div id="addDialog" class="modal-dialog">
+    <div>
+		<a href="#close" title="Close" class="close">X</a>
+		<vc:teams-form id="@null"></vc:teams-form>
+	</div>
+</div>
