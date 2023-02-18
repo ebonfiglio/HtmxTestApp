@@ -1,0 +1,9 @@
+﻿@model HtmxTestApp.Pages.Shared.Components.FormDialog.DialogOptionsModel
+
+
+<div id="@Model.ElementId" class="modal-dialog">
+    <div>
+		<a href="#close" title="Close" class="close">X</a>
+		@await Component.InvokeAsync(Model.ComponentName, Model.EntityId)
+	</div>
+</div>

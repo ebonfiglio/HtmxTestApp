@@ -1,4 +1,5 @@
 ﻿@page
+@using HtmxTestApp.Pages.Shared.Components.FormDialog;
 @using HtmxTestApp.Shared.Entities;
 @model HtmxTestApp.Pages.Teams.IndexModel
 
@@ -10,9 +11,4 @@
 <a asp-page="/Teams/Add" type="button" class="btn btn-primary btn-150w">Add Team</a>
 <a href="#addDialog" type="button" class="btn btn-primary btn-150w">Add with Dialog</a>
 
-<div id="addDialog" class="modal-dialog">
-    <div>
-		<a href="#close" title="Close" class="close">X</a>
-		<vc:teams-form id="@null"></vc:teams-form>
-	</div>
-</div>
+<vc:form-dialog model="@(new DialogOptionsModel(){ElementId="addDialog", ComponentName="TeamsForm"})"></vc:form-dialog>
