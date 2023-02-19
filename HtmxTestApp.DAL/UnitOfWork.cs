@@ -19,6 +19,8 @@ namespace HtmxTestApp.DAL
 
         IRepository<Game> GameRepository { get; }
 
+        IRepository<Country> CountryRepository { get; }
+
         Task SaveChanges();
     }
     public class UnitOfWork : IUnitOfWork
@@ -92,6 +94,19 @@ namespace HtmxTestApp.DAL
                     gameRepository = new GameRepository(context);
                 }
                 return gameRepository;
+            }
+        }
+
+        private IRepository<Country> countryRepository;
+        public IRepository<Country> CountryRepository
+        {
+            get
+            {
+                if (countryRepository == null)
+                {
+                    countryRepository = new CountryRepository(context);
+                }
+                return countryRepository;
             }
         }
 

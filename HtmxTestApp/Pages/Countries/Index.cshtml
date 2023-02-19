@@ -1,0 +1,14 @@
+﻿@page
+@using HtmxTestApp.Pages.Shared.Components.FormDialog;
+@using HtmxTestApp.Shared.Entities;
+@model HtmxTestApp.Pages.Countries.IndexModel
+
+
+<h4>Countries</h4>
+<hr />
+<vc:countries-table countries="@Model.Countries"></vc:countries-table>
+<br />
+<a asp-page="/Countries/Add" type="button" class="btn btn-primary btn-150w">Add Country</a>
+<a href="#addDialog" type="button" class="btn btn-primary btn-150w">Add with Dialog</a>
+
+<vc:form-dialog model="@(new DialogOptionsModel(){ElementId="addDialog", ComponentName="CountriesForm"})"></vc:form-dialog>

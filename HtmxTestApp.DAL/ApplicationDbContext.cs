@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
@@ -20,15 +21,27 @@ namespace HtmxTestApp.DAL
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Game>()
-                    .HasOne(p => p.WinningTeam)
-                    .WithMany(t => t.WinningGames)
-                    .HasForeignKey(m => m.WinningTeamId)
+                    .HasOne(p => p.HomeTeam)
+                    .WithMany(t => t.HomeGames)
+                    .HasForeignKey(m => m.HomeTeamId)
                     .OnDelete(DeleteBehavior.NoAction);
 
             builder.Entity<Game>()
-                    .HasOne(p => p.LosingTeam)
-                    .WithMany(t => t.LosingGames)
-                    .HasForeignKey(m => m.LosingTeamId)
+                    .HasOne(p => p.AwayTeam)
+                    .WithMany(t => t.AwayGames)
+                    .HasForeignKey(m => m.AwayTeamId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Team>()
+                    .HasOne(p => p.Country)
+                    .WithMany()
+                    .HasForeignKey(m => m.CountryId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Player>()
+                    .HasOne(p => p.Country)
+                    .WithMany()
+                    .HasForeignKey(m => m.CountryId)
                     .OnDelete(DeleteBehavior.NoAction);
 
             base.OnModelCreating(builder);
@@ -43,6 +56,8 @@ namespace HtmxTestApp.DAL
         public virtual DbSet<Game> Games { get; set; }
 
         public virtual DbSet<GameLog> GameLogs { get; set; }
+
+        public virtual DbSet<Country> Countries { get; set; }
 
     }
 }

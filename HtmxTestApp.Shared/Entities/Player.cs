@@ -29,6 +29,11 @@ namespace HtmxTestApp.Shared.Entities
 
         public virtual Team Team { get; set; }
 
+        [ForeignKey("Country")]
+        public Guid CountryId { get; set; }
+
+        public virtual Country Country { get; set; }
+
         public virtual IEnumerable<GameLog> GameLogs { get; set; }
     }
 }

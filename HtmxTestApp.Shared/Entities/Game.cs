@@ -14,20 +14,22 @@ namespace HtmxTestApp.Shared.Entities
 
         public DateTime Date { get; set; }
 
-        [ForeignKey("WinningTeam")]
-        public Guid WinningTeamId { get; set; }
+        [ForeignKey("HomeTeam")]
+        public Guid HomeTeamId { get; set; }
 
-        public virtual Team WinningTeam { get; set; }
+        public virtual Team HomeTeam { get; set; }
 
-        public int WinningTeamScore { get; set; }
+        public int HomeTeamScore { get; set; }
 
-        [ForeignKey("LosingTeam")]
-        public Guid LosingTeamId { get; set; }
+        [ForeignKey("AwayTeam")]
+        public Guid AwayTeamId { get; set; }
 
-        public virtual Team LosingTeam { get; set; }
+        public virtual Team AwayTeam { get; set; }
 
-        public int LosingTeamScore { get; set; }
+        public int AwayTeamScore { get; set; }
 
         public virtual IEnumerable<GameLog> GameLogs { get; set; }
+
+        public bool IsFinished { get; set; }
     }
 }

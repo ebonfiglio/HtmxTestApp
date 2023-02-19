@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HtmxTestApp.Shared", "HtmxT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HtmxTestApp.Domain", "HtmxTestApp.Domain\HtmxTestApp.Domain.csproj", "{445E9C1F-C00E-4C44-A891-B274F8879023}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmxTestApp.Console", "HtmxTestApp.Console\HtmxTestApp.Console.csproj", "{8467D5A3-98BB-4FE9-85F7-48E502DD0C71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{445E9C1F-C00E-4C44-A891-B274F8879023}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{445E9C1F-C00E-4C44-A891-B274F8879023}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{445E9C1F-C00E-4C44-A891-B274F8879023}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8467D5A3-98BB-4FE9-85F7-48E502DD0C71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8467D5A3-98BB-4FE9-85F7-48E502DD0C71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8467D5A3-98BB-4FE9-85F7-48E502DD0C71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8467D5A3-98BB-4FE9-85F7-48E502DD0C71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
