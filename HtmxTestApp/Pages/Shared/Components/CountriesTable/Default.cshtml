@@ -18,7 +18,7 @@
     {
             <tr>
             <td>@country.Name</td>
-            <td>@country.HtmlCode</td>
+            <td>@Html.Raw(country.HtmlCode)</td>
             <td><a asp-page="/Countries/Edit" asp-route-id="@country.Id" type="button" class="btn btn-edit btn-75w">Edit</a> | <a asp-page="/Countries/Edit" asp-route-id="@country.Id" type="button" class="btn btn-delete btn-75w">Delete</a></td>
             </tr>
     }

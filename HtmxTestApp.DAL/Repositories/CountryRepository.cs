@@ -8,7 +8,7 @@ using static HtmxTestApp.DAL.Repositories.IGenericRepository;
 
 namespace HtmxTestApp.DAL.Repositories
 {
-    internal class CountryRepository : GenericRepository<Country>
+    public class CountryRepository : GenericRepository<Country>
     {
         public CountryRepository(ApplicationDbContext context) : base(context)
         {

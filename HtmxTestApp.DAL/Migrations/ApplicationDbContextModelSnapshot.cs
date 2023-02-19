@@ -25,32 +25,54 @@ namespace HtmxTestApp.DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("HtmxTestApp.Shared.Entities.Country", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("HtmlCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Countries");
+                });
+
             modelBuilder.Entity("HtmxTestApp.Shared.Entities.Game", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("AwayTeamId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AwayTeamScore")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("LosingTeamId")
+                    b.Property<Guid>("HomeTeamId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("LosingTeamScore")
+                    b.Property<int>("HomeTeamScore")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("WinningTeamId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("WinningTeamScore")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsFinished")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LosingTeamId");
+                    b.HasIndex("AwayTeamId");
 
-                    b.HasIndex("WinningTeamId");
+                    b.HasIndex("HomeTeamId");
 
                     b.ToTable("Games");
                 });
@@ -91,6 +113,9 @@ namespace HtmxTestApp.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("CountryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
@@ -109,6 +134,8 @@ namespace HtmxTestApp.DAL.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
 
                     b.HasIndex("PositionId");
 
@@ -141,8 +168,11 @@ namespace HtmxTestApp.DAL.Migrations
 
             modelBuilder.Entity("HtmxTestApp.Shared.Entities.Team", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CountryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -151,26 +181,28 @@ namespace HtmxTestApp.DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CountryId");
+
                     b.ToTable("Teams");
                 });
 
             modelBuilder.Entity("HtmxTestApp.Shared.Entities.Game", b =>
                 {
-                    b.HasOne("HtmxTestApp.Shared.Entities.Team", "LosingTeam")
-                        .WithMany("LosingGames")
-                        .HasForeignKey("LosingTeamId")
+                    b.HasOne("HtmxTestApp.Shared.Entities.Team", "AwayTeam")
+                        .WithMany("AwayGames")
+                        .HasForeignKey("AwayTeamId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("HtmxTestApp.Shared.Entities.Team", "WinningTeam")
-                        .WithMany("WinningGames")
-                        .HasForeignKey("WinningTeamId")
+                    b.HasOne("HtmxTestApp.Shared.Entities.Team", "HomeTeam")
+                        .WithMany("HomeGames")
+                        .HasForeignKey("HomeTeamId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("LosingTeam");
+                    b.Navigation("AwayTeam");
 
-                    b.Navigation("WinningTeam");
+                    b.Navigation("HomeTeam");
                 });
 
             modelBuilder.Entity("HtmxTestApp.Shared.Entities.GameLog", b =>
@@ -194,6 +226,12 @@ namespace HtmxTestApp.DAL.Migrations
 
             modelBuilder.Entity("HtmxTestApp.Shared.Entities.Player", b =>
                 {
+                    b.HasOne("HtmxTestApp.Shared.Entities.Country", "Country")
+                        .WithMany("Players")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("HtmxTestApp.Shared.Entities.Position", "Position")
                         .WithMany()
                         .HasForeignKey("PositionId")
@@ -206,9 +244,27 @@ namespace HtmxTestApp.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Country");
+
                     b.Navigation("Position");
 
                     b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("HtmxTestApp.Shared.Entities.Team", b =>
+                {
+                    b.HasOne("HtmxTestApp.Shared.Entities.Country", "Country")
+                        .WithMany("Teams")
+                        .HasForeignKey("CountryId");
+
+                    b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("HtmxTestApp.Shared.Entities.Country", b =>
+                {
+                    b.Navigation("Players");
+
+                    b.Navigation("Teams");
                 });
 
             modelBuilder.Entity("HtmxTestApp.Shared.Entities.Game", b =>
@@ -223,11 +279,11 @@ namespace HtmxTestApp.DAL.Migrations
 
             modelBuilder.Entity("HtmxTestApp.Shared.Entities.Team", b =>
                 {
-                    b.Navigation("LosingGames");
+                    b.Navigation("AwayGames");
+
+                    b.Navigation("HomeGames");
 
                     b.Navigation("Players");
-
-                    b.Navigation("WinningGames");
                 });
 #pragma warning restore 612, 618
         }

@@ -32,17 +32,17 @@ namespace HtmxTestApp.DAL
                     .HasForeignKey(m => m.AwayTeamId)
                     .OnDelete(DeleteBehavior.NoAction);
 
-            builder.Entity<Team>()
-                    .HasOne(p => p.Country)
-                    .WithMany()
-                    .HasForeignKey(m => m.CountryId)
-                    .OnDelete(DeleteBehavior.NoAction);
+            //builder.Entity<Team>()
+            //        .HasOne(p => p.Country)
+            //        .WithMany()
+            //        .HasForeignKey(m => m.CountryId)
+            //        .OnDelete(DeleteBehavior.NoAction);
 
-            builder.Entity<Player>()
-                    .HasOne(p => p.Country)
-                    .WithMany()
-                    .HasForeignKey(m => m.CountryId)
-                    .OnDelete(DeleteBehavior.NoAction);
+            //builder.Entity<Player>().Property(l => l.)
+            //        .HasOne(p => p.Country)
+            //        .WithMany()
+            //        .HasForeignKey(m => m.CountryId)
+            //        .OnDelete(DeleteBehavior.NoAction);
 
             base.OnModelCreating(builder);
         }

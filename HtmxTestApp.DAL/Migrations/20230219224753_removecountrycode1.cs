@@ -5,25 +5,18 @@
 namespace HtmxTestApp.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class isfinished : Migration
+    public partial class removecountrycode1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "IsFinished",
-                table: "Games",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
+
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "IsFinished",
-                table: "Games");
+
         }
     }
 }

@@ -1,0 +1,11 @@
+﻿@using HtmxTestApp.Shared.Entities;
+@model Country
+
+
+<form asp-page="@(Model.Id == Guid.Empty ? "/Countries/Add" : "/Countries/Edit")" method="post">
+    <label asp-for="Name"></label>
+    <input asp-for="Name" />
+    <label asp-for="HtmlCode"></label>
+    <input asp-for="HtmlCode" />
+    <button class="btn @(Model.Id == Guid.Empty ? "btn-primary" : "btn-edit") btn-75w" type="submit">@(Model.Id == Guid.Empty ? "Add" : "Edit")</button>
+</form>

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HtmxTestApp.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230219182437_countries2")]
-    partial class countries2
+    [Migration("20230219224753_removecountrycode1")]
+    partial class removecountrycode1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -67,6 +67,9 @@ namespace HtmxTestApp.DAL.Migrations
 
                     b.Property<int>("HomeTeamScore")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsFinished")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -227,9 +230,9 @@ namespace HtmxTestApp.DAL.Migrations
             modelBuilder.Entity("HtmxTestApp.Shared.Entities.Player", b =>
                 {
                     b.HasOne("HtmxTestApp.Shared.Entities.Country", "Country")
-                        .WithMany()
+                        .WithMany("Players")
                         .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("HtmxTestApp.Shared.Entities.Position", "Position")
@@ -254,9 +257,8 @@ namespace HtmxTestApp.DAL.Migrations
             modelBuilder.Entity("HtmxTestApp.Shared.Entities.Team", b =>
                 {
                     b.HasOne("HtmxTestApp.Shared.Entities.Country", "Country")
-                        .WithMany()
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .WithMany("Teams")
+                        .HasForeignKey("CountryId");
 
                     b.Navigation("Country");
                 });

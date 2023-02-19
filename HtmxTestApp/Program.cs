@@ -25,9 +25,12 @@ builder.Services.AddScoped<IRepository<Team>, TeamRepository>();
 builder.Services.AddScoped<IRepository<Game>, GameRepository>();
 builder.Services.AddScoped<IRepository<GameLog>, GameLogRepository>();
 builder.Services.AddScoped<IRepository<Position>, PositionRepository>();
+builder.Services.AddScoped<IRepository<Country>, CountryRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPlayerService, PlayerService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
+builder.Services.AddScoped<ICountryService, CountryService>();
+builder.Services.AddScoped<IGameService, GameService>();
 
 var app = builder.Build();
 

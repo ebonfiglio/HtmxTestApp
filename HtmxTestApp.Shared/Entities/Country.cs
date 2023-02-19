@@ -16,8 +16,8 @@ namespace HtmxTestApp.Shared.Entities
 
         public string HtmlCode { get; set; }
 
-        public virtual IEnumerable<Team> Teams { get; set; }
+        public virtual IEnumerable<Team>? Teams { get; set; }
 
-        public virtual IEnumerable<Player> Players { get; set; }
+        public virtual IEnumerable<Player>? Players { get; set; }
     }
 }
