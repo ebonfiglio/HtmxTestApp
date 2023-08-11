@@ -1,0 +1,17 @@
+﻿@page "/teams/index";
+
+<h3>Teams</h3>
+
+<MudPaper Elevation="3" Square="false" Class="px-4 py-4">
+    <MudTable Items="teams" Striped="true" Bordered="true" Hover="true" Dense="true">
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>Country</MudTh>
+            <!-- Add more headers if you have more properties -->
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="CountryName">@context.Country?.Name</MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudPaper>
