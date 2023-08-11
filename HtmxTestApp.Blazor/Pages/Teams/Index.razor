@@ -7,11 +7,15 @@
         <HeaderContent>
             <MudTh>Name</MudTh>
             <MudTh>Country</MudTh>
-            <!-- Add more headers if you have more properties -->
+            <MudTh>Actions</MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Name">@context.Name</MudTd>
             <MudTd DataLabel="CountryName">@context.Country?.Name</MudTd>
+            <MudTd>
+                <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="(() => EditTeam(context.Id.Value))">Edit</MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Error" OnClick="(() => DeleteTeam(context.Id.Value))">Delete</MudButton>
+            </MudTd>
         </RowTemplate>
     </MudTable>
 </MudPaper>

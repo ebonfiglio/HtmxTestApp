@@ -22,5 +22,13 @@ namespace HtmxTestApp.Blazor.Services.Teams
 
             return teams;
         }
+
+
+        public async Task DeleteAsync(Guid id)
+        {
+            HttpResponseMessage response = await _httpClient.DeleteAsync($"/api/teams/{id}");
+            response.EnsureSuccessStatusCode();
+        }
+
     }
 }

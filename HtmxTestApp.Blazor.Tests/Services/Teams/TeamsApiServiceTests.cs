@@ -71,5 +71,38 @@ namespace HtmxTestApp.Blazor.Tests.Services.Teams
                 ItExpr.IsAny<HttpRequestMessage>(),
                 ItExpr.IsAny<CancellationToken>());
         }
+
+        [Fact]
+        public async Task DeleteAsyncTest()
+        {
+            // Arrange
+            var teamId = Guid.NewGuid();
+
+            _handlerMock.Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.Is<HttpRequestMessage>(req =>
+                        req.Method == HttpMethod.Delete &&
+                        req.RequestUri == new Uri($"https://localhost:7141/api/teams/{teamId}")
+                    ),
+                    ItExpr.IsAny<CancellationToken>()
+                )
+                .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK))
+                .Verifiable();
+
+            // Act
+            await _teamsApiService.DeleteAsync(teamId); // Assuming _teamService is of type TeamsApiService
+
+            // Assert
+            _handlerMock.Protected().Verify(
+                "SendAsync",
+                Times.Exactly(1),
+                ItExpr.Is<HttpRequestMessage>(req =>
+                    req.Method == HttpMethod.Delete &&
+                    req.RequestUri == new Uri($"https://localhost:7141/api/teams/{teamId}")
+                ),
+                ItExpr.IsAny<CancellationToken>()
+            );
+        }
     }
 }

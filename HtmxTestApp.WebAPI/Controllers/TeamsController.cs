@@ -21,5 +21,12 @@ namespace HtmxTestApp.WebAPI.Controllers
             List<Team> teams = await _teamService.GetAllAsync();
             return Ok(teams);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await _teamService.DeleteAsync(id);
+            return Ok();
+        }
     }
 }
