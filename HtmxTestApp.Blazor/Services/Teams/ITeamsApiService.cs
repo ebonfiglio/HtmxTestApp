@@ -6,5 +6,8 @@ namespace HtmxTestApp.Blazor.Services.Teams
     {
         Task<List<Team>> GetAllAsync();
         Task DeleteAsync(Guid id);
+
+        Task<Team> CreateAsync(Team team);
+        Task<Team> UpdateAsync(Team team);
     }
 }

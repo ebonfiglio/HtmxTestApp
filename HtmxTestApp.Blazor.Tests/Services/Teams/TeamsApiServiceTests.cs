@@ -104,5 +104,87 @@ namespace HtmxTestApp.Blazor.Tests.Services.Teams
                 ItExpr.IsAny<CancellationToken>()
             );
         }
+
+        [Fact]
+        public async Task CreateAsyncTest()
+        {
+            // Arrange
+            Team team = _teams[0];
+
+            _handlerMock.Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.Is<HttpRequestMessage>(req =>
+                        req.Method == HttpMethod.Post &&
+                        req.RequestUri == new Uri($"https://localhost:7141/api/teams")
+                    ),
+                    ItExpr.IsAny<CancellationToken>()
+                )
+                .ReturnsAsync(new HttpResponseMessage()
+                {
+                    StatusCode = HttpStatusCode.Created,
+                    Content = new StringContent(JsonConvert.SerializeObject(team)),
+                })
+                .Verifiable();
+
+            // Act
+            Team newteam = await _teamsApiService.CreateAsync(team);
+
+            // Assert
+            Assert.Equal(team.Id, newteam.Id);
+            Assert.Equal(team.CountryId, newteam.CountryId);
+            Assert.Equal(team.Name, newteam.Name);
+
+            _handlerMock.Protected().Verify(
+                "SendAsync",
+                Times.Exactly(1),
+                new HttpResponseMessage()
+                {
+                    StatusCode = HttpStatusCode.Created,
+                    Content = new StringContent(JsonConvert.SerializeObject(team)),
+                },
+                ItExpr.IsAny<CancellationToken>());
+        }
+
+        [Fact]
+        public async Task UpdateAsyncTest()
+        {
+            // Arrange
+            Team team = _teams[0];
+
+            _handlerMock.Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.Is<HttpRequestMessage>(req =>
+                        req.Method == HttpMethod.Put &&
+                        req.RequestUri == new Uri($"https://localhost:7141/api/teams")
+                    ),
+                    ItExpr.IsAny<CancellationToken>()
+                )
+                .ReturnsAsync(new HttpResponseMessage()
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent(JsonConvert.SerializeObject(team)),
+                })
+                .Verifiable();
+
+            // Act
+            Team updatedteam = await _teamsApiService.CreateAsync(team);
+
+            // Assert
+            Assert.Equal(team.Id, updatedteam.Id);
+            Assert.Equal(team.CountryId, updatedteam.CountryId);
+            Assert.Equal(team.Name, updatedteam.Name);
+
+            _handlerMock.Protected().Verify(
+                "SendAsync",
+                Times.Exactly(1),
+                new HttpResponseMessage()
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent(JsonConvert.SerializeObject(team)),
+                },
+                ItExpr.IsAny<CancellationToken>());
+        }
     }
 }

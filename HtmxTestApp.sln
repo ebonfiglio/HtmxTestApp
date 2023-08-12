@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HtmxTestApp.Blazor", "HtmxT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HtmxTestApp.WebAPI", "HtmxTestApp.WebAPI\HtmxTestApp.WebAPI.csproj", "{DE3EEB8D-E180-41E3-BA21-65A7DADD50AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmxTestApp.Blazor.Tests", "HtmxTestApp.Blazor.Tests\HtmxTestApp.Blazor.Tests.csproj", "{322E31A9-6121-4A36-A5A5-ECEEA89E91E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HtmxTestApp.Blazor.Tests", "HtmxTestApp.Blazor.Tests\HtmxTestApp.Blazor.Tests.csproj", "{322E31A9-6121-4A36-A5A5-ECEEA89E91E6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,13 @@
+﻿@using HtmxTestApp.Shared.Entities;
+<h3>TeamForm</h3>
+
+<MudForm @ref="Form" OnValidSubmit="Save">
+    <MudTextField Label="Team Name" @bind-Value="@_team.Name" For="@(() => _team.Name)" Required Variant="Variant.Outlined"></MudTextField>
+     <MudSelect Label="Country" @bind-Value="@_team.Country" T="Country">
+         @foreach (Country country in Countries)
+        {
+            <MudSelectItem Value="@country" />
+        }
+    </MudSelect>
+    <MudButton Type="Submit" Color="Color.Primary" Variant="Variant.Filled">Save</MudButton>
+</MudForm>

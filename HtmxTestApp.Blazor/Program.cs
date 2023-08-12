@@ -1,4 +1,5 @@
 using HtmxTestApp.Blazor;
+using HtmxTestApp.Blazor.Services.Countries;
 using HtmxTestApp.Blazor.Services.Teams;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -11,6 +12,11 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddMudServices();
 
 builder.Services.AddHttpClient<ITeamsApiService, TeamsApiService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7141");
+});
+
+builder.Services.AddHttpClient<ICountriesApiService, CountriesApiService>(client =>
 {
     client.BaseAddress = new Uri("https://localhost:7141");
 });
