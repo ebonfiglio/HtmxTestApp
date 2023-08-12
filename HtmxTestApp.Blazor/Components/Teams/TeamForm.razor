@@ -3,10 +3,10 @@
 
 <MudForm @ref="Form" OnValidSubmit="Save">
     <MudTextField Label="Team Name" @bind-Value="@_team.Name" For="@(() => _team.Name)" Required Variant="Variant.Outlined"></MudTextField>
-     <MudSelect Label="Country" @bind-Value="@_team.Country" T="Country">
+     <MudSelect Label="Country" @bind-Value="@_team.CountryId" T="Guid?">
          @foreach (Country country in Countries)
         {
-            <MudSelectItem Value="@country" />
+            <MudSelectItem T="Guid?" Value="@country.Id">@country.Name</MudSelectItem>
         }
     </MudSelect>
     <MudButton Type="Submit" Color="Color.Primary" Variant="Variant.Filled">Save</MudButton>
