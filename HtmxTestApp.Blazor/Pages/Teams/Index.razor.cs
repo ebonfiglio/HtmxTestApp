@@ -62,5 +62,16 @@ namespace HtmxTestApp.Blazor.Pages.Teams
             teams = await _teamsApiService.GetAllAsync();
             StateHasChanged();
         }
+
+        // Add method
+        protected void AddTeam()
+        {
+            // You can navigate to an edit page or open a dialog for editing
+        }
+
+        protected void QuickAddTeam()
+        {
+            
+        }
     }
 }

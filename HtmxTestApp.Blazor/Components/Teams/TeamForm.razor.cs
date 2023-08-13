@@ -15,7 +15,7 @@ namespace HtmxTestApp.Blazor.Components.Teams
         private ITeamsApiService _teamsApiService { get; set; }
 
         [Parameter]
-        public EventCallback<Team> OnSubmit { get; set; }
+        public EventCallback<Team>? OnSubmit { get; set; }
 
         [Parameter]
         public Team? Team { get; set; }
@@ -47,8 +47,11 @@ namespace HtmxTestApp.Blazor.Components.Teams
                     await _teamsApiService.UpdateAsync(_team);
                 }
 
-                // Optionally, you may want to raise an event to notify the parent component that the operation has completed
-                await OnSubmit.InvokeAsync(_team);
+                if (OnSubmit is not null)
+                {
+                    // Optionally, you may want to raise an event to notify the parent component that the operation has completed
+                    await OnSubmit?.InvokeAsync(_team);
+                }
             }
         }
 
