@@ -1,24 +1,34 @@
-using HtmxTestApp.Blazor;
-using HtmxTestApp.Blazor.Services.Countries;
-using HtmxTestApp.Blazor.Services.Teams;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using MudBlazor.Services;
+using HtmxTestApp.Blazor.Components;
 
-var builder = WebAssemblyHostBuilder.CreateDefault(args);
-builder.RootComponents.Add<App>("#app");
-builder.RootComponents.Add<HeadOutlet>("head::after");
-
-builder.Services.AddMudServices();
-
-builder.Services.AddHttpClient<ITeamsApiService, TeamsApiService>(client =>
+namespace HtmxTestApp.Blazor
 {
-    client.BaseAddress = new Uri("https://localhost:7141");
-});
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddHttpClient<ICountriesApiService, CountriesApiService>(client =>
-{
-    client.BaseAddress = new Uri("https://localhost:7141");
-});
+            // Add services to the container.
+            builder.Services.AddRazorComponents();
 
-await builder.Build().RunAsync();
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+
+            app.UseAntiforgery();
+
+            app.MapStaticAssets();
+            app.MapRazorComponents<App>();
+
+            app.Run();
+        }
+    }
+}
