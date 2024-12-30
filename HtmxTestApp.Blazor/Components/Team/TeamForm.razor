@@ -1,0 +1,101 @@
+﻿@using HtmxTestApp.Domain.Services.Contracts
+@using HtmxTestApp.Shared.Entities
+@inject ITeamService TeamService
+@inject ICountryService CountryService
+@inject IHttpContextAccessor HttpContextAccessor
+
+<EditForm Model="@teamDto" OnValidSubmit="HandleValidSubmit" FormName="TeamForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="name">Name</label>
+        <InputText id="name" class="form-control" @bind-Value="teamDto.Name" />
+    </div>
+
+    <div class="form-group">
+        <label for="country">Country</label>
+        <InputSelect id="country" class="form-control" @bind-Value="teamDto.CountryId">
+            @foreach (var country in countries)
+            {
+                <option value="@country.Id">@country.Name</option>
+            }
+        </InputSelect>
+    </div>
+
+    <button type="submit" class="btn btn-primary" name="submitButton" value="Save">@SubmitButtonText</button>
+    <button type="submit" class="btn btn-secondary" name="submitButton" value="Cancel">Cancel</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public Guid? TeamId { get; set; }
+
+    [Parameter]
+    public EventCallback OnSave { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    [Parameter]
+    public string SubmitButtonText { get; set; } = "Save";
+
+    [SupplyParameterFromForm]
+    private TeamDto teamDto { get; set; } = new();
+    private List<Country> countries = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        countries = await CountryService.GetAllAsync();
+
+        if (TeamId.HasValue)
+        {
+            var team = await TeamService.GetAsync(TeamId.Value);
+            teamDto.Name = team.Name;
+            teamDto.CountryId = team.CountryId;
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var form = HttpContextAccessor.HttpContext.Request.Form;
+        var clickedButton = form["submitButton"].ToString();
+
+        if (clickedButton == "Save")
+        {
+            var team = new Team
+                {
+                    Id = TeamId,
+                    Name = teamDto.Name,
+                    CountryId = teamDto.CountryId
+                };
+
+            if (TeamId.HasValue)
+            {
+                await TeamService.UpdateAsync(team);
+            }
+            else
+            {
+                await TeamService.AddAsync(team);
+            }
+
+            if (OnSave.HasDelegate)
+            {
+                await OnSave.InvokeAsync(null);
+            }
+        }
+        else if (clickedButton == "Cancel")
+        {
+            if (OnCancel.HasDelegate)
+            {
+                await OnCancel.InvokeAsync(null);
+            }
+        }
+    }
+
+    public class TeamDto
+    {
+        public string Name { get; set; }
+        public Guid? CountryId { get; set; }
+    }
+}

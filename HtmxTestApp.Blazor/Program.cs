@@ -1,4 +1,10 @@
 using HtmxTestApp.Blazor.Components;
+using HtmxTestApp.DAL;
+using HtmxTestApp.DAL.Repositories;
+using HtmxTestApp.Domain.Services;
+using HtmxTestApp.Domain.Services.Contracts;
+using HtmxTestApp.Shared.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace HtmxTestApp.Blazor
 {
@@ -8,8 +14,31 @@ namespace HtmxTestApp.Blazor
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var config = new ConfigurationBuilder()
+           .AddJsonFile("appsettings.json")
+           .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+           .Build();
+
+            var defaultConnectionString = config.GetConnectionString("Default");
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                        options.UseLazyLoadingProxies().UseSqlServer(defaultConnectionString));
+
             // Add services to the container.
             builder.Services.AddRazorComponents();
+            builder.Services.AddScoped<IRepository<Player>, PlayerRepository>();
+            builder.Services.AddScoped<IRepository<Team>, TeamRepository>();
+            builder.Services.AddScoped<IRepository<Game>, GameRepository>();
+            builder.Services.AddScoped<IRepository<GameLog>, GameLogRepository>();
+            builder.Services.AddScoped<IRepository<Position>, PositionRepository>();
+            builder.Services.AddScoped<IRepository<Country>, CountryRepository>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IPlayerService, PlayerService>();
+            builder.Services.AddScoped<ITeamService, TeamService>();
+            builder.Services.AddScoped<ICountryService, CountryService>();
+            builder.Services.AddScoped<IGameService, GameService>();
+
+            builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();
 

@@ -1,0 +1,75 @@
+﻿@page "/teams"
+@using HtmxTestApp.Domain.Services.Contracts
+@using HtmxTestApp.Shared.Entities
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inject ITeamService TeamService
+
+<h3>Teams</h3>
+<div class="mb-3">
+    <a class="btn btn-primary" href="/teamform">Add Team</a>
+    <form method="post" data-enhance="true" @onsubmit=@(() => ShowAddTeamDialog()) @formname="TeamDialog">
+        <AntiforgeryToken></AntiforgeryToken>
+         <button class="btn btn-secondary">Add Team by Dialog</button>
+    </form>
+</div>
+<QuickGrid Items="@teams">
+    <PropertyColumn Property="@(t => t.Id)" Sortable="true" />
+    <TemplateColumn Title="Name" Sortable="true">
+        <a href="/teamform/@context.Id">@context.Name</a>
+    </TemplateColumn>
+    <PropertyColumn Property="@(t => t.Country == null ? "" : t.Country.Name)" Sortable="true" />
+    <TemplateColumn Title="Flag" Sortable="true">
+        @((MarkupString)(context.Country?.HtmlCode ?? string.Empty))
+    </TemplateColumn>
+</QuickGrid>
+
+@if (isDialogVisible)
+{
+    <div class="modal-backdrop">
+        <div class="modal">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Team</h5>
+                <button type="button" class="close" @onclick="CloseDialog">&times;</button>
+            </div>
+            <div class="modal-body">
+                <TeamForm OnSave="OnTeamAdded" OnCancel="CloseDialog" SubmitButtonText="Add" />
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <form @formname="TeamForm"></form>
+}
+
+@code {
+    private IQueryable<Team> teams;
+    private bool isDialogVisible = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadTeamsAsync();
+    }
+
+    private async Task LoadTeamsAsync()
+    {
+        var teamList = await TeamService.GetAllAsync();
+        teams = teamList.AsQueryable();
+    }
+
+    private void ShowAddTeamDialog()
+    {
+        isDialogVisible = true;
+    }
+
+    private async Task OnTeamAdded()
+    {
+        isDialogVisible = false;
+        await LoadTeamsAsync();
+    }
+
+    private void CloseDialog()
+    {
+        isDialogVisible = false;
+    }
+}

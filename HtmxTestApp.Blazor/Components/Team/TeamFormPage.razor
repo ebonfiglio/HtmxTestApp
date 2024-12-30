@@ -1,0 +1,10 @@
+﻿@page "/teamform/{teamId:guid?}"
+
+<h3>@(teamId == null ? "Add Team" : "Edit Team")</h3>
+
+<TeamForm TeamId="teamId" SubmitButtonText="Save" />
+
+@code {
+    [Parameter]
+    public Guid? teamId { get; set; }
+}
