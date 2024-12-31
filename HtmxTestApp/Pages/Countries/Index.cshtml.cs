@@ -1,6 +1,5 @@
 using HtmxTestApp.Domain.Services.Contracts;
 using HtmxTestApp.Shared.Entities;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HtmxTestApp.Pages.Countries
@@ -14,9 +13,9 @@ namespace HtmxTestApp.Pages.Countries
         {
             this.countryService = countryService;
         }
-        public async Task OnGet()
+        public void OnGet()
         {
-            Countries = await countryService.GetAllAsync();
+            Countries = countryService.GetAll();
         }
     }
 }

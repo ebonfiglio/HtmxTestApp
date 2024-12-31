@@ -25,7 +25,9 @@ namespace HtmxTestApp.Blazor
                         options.UseLazyLoadingProxies().UseSqlServer(defaultConnectionString));
 
             // Add services to the container.
-            builder.Services.AddRazorComponents();
+            builder.Services.AddRazorComponents()
+                .AddInteractiveWebAssemblyComponents();
+
             builder.Services.AddScoped<IRepository<Player>, PlayerRepository>();
             builder.Services.AddScoped<IRepository<Team>, TeamRepository>();
             builder.Services.AddScoped<IRepository<Game>, GameRepository>();
@@ -55,7 +57,10 @@ namespace HtmxTestApp.Blazor
             app.UseAntiforgery();
 
             app.MapStaticAssets();
-            app.MapRazorComponents<App>();
+            app.UseStaticFiles();
+            app.UseBlazorFrameworkFiles();
+            app.MapRazorComponents<App>()
+                .AddInteractiveWebAssemblyRenderMode();
 
             app.Run();
         }

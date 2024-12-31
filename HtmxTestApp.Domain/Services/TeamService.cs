@@ -1,12 +1,7 @@
 ﻿using HtmxTestApp.DAL;
 using HtmxTestApp.Domain.Services.Contracts;
 using HtmxTestApp.Shared.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HtmxTestApp.Domain.Services
 {
@@ -19,38 +14,38 @@ namespace HtmxTestApp.Domain.Services
         }
         public async Task<Team> AddAsync(Team entity)
         {
-            Team team = await unitOfWork.TeamRepository.Add(entity);
-            await unitOfWork.SaveChanges();
+            Team team = await unitOfWork.TeamRepository.AddAsync(entity);
+            await unitOfWork.SaveChangesAsync();
             return team;
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            Team team = await unitOfWork.TeamRepository.Get(id);
-            await unitOfWork.TeamRepository.Delete(team);
+            Team team = await unitOfWork.TeamRepository.GetByIdAsync(id);
+            unitOfWork.TeamRepository.Delete(team);
         }
 
-        public async Task<List<Team>> FindAsync(Expression<Func<Team, bool>> predicate)
+        public List<Team> Find(Expression<Func<Team, bool>> predicate)
         {
-            IEnumerable<Team> result = await unitOfWork.TeamRepository.Find(predicate);
+            IEnumerable<Team> result = unitOfWork.TeamRepository.Find(predicate);
             return result.ToList();
         }
 
-        public async Task<List<Team>> GetAllAsync()
+        public List<Team> GetAll()
         {
-            IEnumerable<Team> teams = await unitOfWork.TeamRepository.All();
+            IEnumerable<Team> teams = unitOfWork.TeamRepository.GetAll();
             return teams.ToList();
         }
 
         public async Task<Team> GetAsync(Guid id)
         {
-            return await unitOfWork.TeamRepository.Get(id);
+            return await unitOfWork.TeamRepository.GetByIdAsync(id);
         }
 
         public async Task<Team> UpdateAsync(Team entity)
         {
-            Team team = await unitOfWork.TeamRepository.Update(entity);
-            await unitOfWork.SaveChanges();
+            Team team = await unitOfWork.TeamRepository.UpdateAsync(entity);
+            await unitOfWork.SaveChangesAsync();
             return team;
         }
     }

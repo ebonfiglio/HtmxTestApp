@@ -1,6 +1,5 @@
 using HtmxTestApp.Domain.Services.Contracts;
 using HtmxTestApp.Shared.Entities;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HtmxTestApp.Pages.Games
@@ -14,9 +13,9 @@ namespace HtmxTestApp.Pages.Games
         {
             this.gameService = gameService;
         }
-        public async Task OnGet()
+        public void OnGet()
         {
-            Games = await gameService.GetAllAsync();
+            Games = gameService.GetAll();
         }
     }
 }

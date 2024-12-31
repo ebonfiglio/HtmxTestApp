@@ -1,6 +1,5 @@
 ﻿using HtmxTestApp.Domain.Services.Contracts;
 using HtmxTestApp.Shared.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HtmxTestApp.WebAPI.Controllers
@@ -12,13 +11,13 @@ namespace HtmxTestApp.WebAPI.Controllers
         private readonly ITeamService _teamService;
         public TeamsController(ITeamService teamService)
         {
-                _teamService = teamService;
+            _teamService = teamService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetList()
+        public IActionResult GetList()
         {
-            List<Team> teams = await _teamService.GetAllAsync();
+            List<Team> teams = _teamService.GetAll();
             return Ok(teams);
         }
 

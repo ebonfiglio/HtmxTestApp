@@ -1,6 +1,5 @@
 ﻿using HtmxTestApp.Domain.Services.Contracts;
 using HtmxTestApp.Shared.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HtmxTestApp.WebAPI.Controllers
@@ -16,9 +15,9 @@ namespace HtmxTestApp.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetList()
+        public IActionResult GetList()
         {
-            List<Country> countries = await _countryService.GetAllAsync();
+            List<Country> countries = _countryService.GetAll();
             return Ok(countries);
         }
     }

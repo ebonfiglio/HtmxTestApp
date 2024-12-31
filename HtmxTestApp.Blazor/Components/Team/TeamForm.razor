@@ -46,7 +46,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        countries = await CountryService.GetAllAsync();
+        countries = CountryService.GetAll();
 
         if (TeamId.HasValue)
         {

@@ -1,12 +1,7 @@
 ﻿using HtmxTestApp.DAL;
 using HtmxTestApp.Domain.Services.Contracts;
 using HtmxTestApp.Shared.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HtmxTestApp.Domain.Services
 {
@@ -19,38 +14,38 @@ namespace HtmxTestApp.Domain.Services
         }
         public async Task<Country> AddAsync(Country entity)
         {
-            Country country = await unitOfWork.CountryRepository.Add(entity);
-            await unitOfWork.SaveChanges();
+            Country country = await unitOfWork.CountryRepository.AddAsync(entity);
+            await unitOfWork.SaveChangesAsync();
             return country;
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            Country country = await unitOfWork.CountryRepository.Get(id);
-            await unitOfWork.CountryRepository.Delete(country);
+            Country country = await unitOfWork.CountryRepository.GetByIdAsync(id);
+            unitOfWork.CountryRepository.Delete(country);
         }
 
-        public async Task<List<Country>> FindAsync(Expression<Func<Country, bool>> predicate)
+        public List<Country> Find(Expression<Func<Country, bool>> predicate)
         {
-            IEnumerable<Country> result = await unitOfWork.CountryRepository.Find(predicate);
+            IEnumerable<Country> result = unitOfWork.CountryRepository.Find(predicate);
             return result.ToList();
         }
 
-        public async Task<List<Country>> GetAllAsync()
+        public List<Country> GetAll()
         {
-            IEnumerable<Country> countrys = await unitOfWork.CountryRepository.All();
+            IEnumerable<Country> countrys = unitOfWork.CountryRepository.GetAll();
             return countrys.ToList();
         }
 
         public async Task<Country> GetAsync(Guid id)
         {
-            return await unitOfWork.CountryRepository.Get(id);
+            return await unitOfWork.CountryRepository.GetByIdAsync(id);
         }
 
         public async Task<Country> UpdateAsync(Country entity)
         {
-            Country country = await unitOfWork.CountryRepository.Update(entity);
-            await unitOfWork.SaveChanges();
+            Country country = await unitOfWork.CountryRepository.UpdateAsync(entity);
+            await unitOfWork.SaveChangesAsync();
             return country;
         }
     }

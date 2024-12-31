@@ -1,6 +1,5 @@
 using HtmxTestApp.Domain.Services.Contracts;
 using HtmxTestApp.Shared.Entities;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HtmxTestApp.Pages.Teams
@@ -14,9 +13,9 @@ namespace HtmxTestApp.Pages.Teams
         {
             this.teamService = teamService;
         }
-        public async Task OnGet()
+        public void OnGet()
         {
-            Teams = await teamService.GetAllAsync();
+            Teams = teamService.GetAll();
         }
     }
 }

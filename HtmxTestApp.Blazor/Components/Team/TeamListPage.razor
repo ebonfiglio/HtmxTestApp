@@ -12,16 +12,7 @@
          <button class="btn btn-secondary">Add Team by Dialog</button>
     </form>
 </div>
-<QuickGrid Items="@teams">
-    <PropertyColumn Property="@(t => t.Id)" Sortable="true" />
-    <TemplateColumn Title="Name" Sortable="true">
-        <a href="/teamform/@context.Id">@context.Name</a>
-    </TemplateColumn>
-    <PropertyColumn Property="@(t => t.Country == null ? "" : t.Country.Name)" Sortable="true" />
-    <TemplateColumn Title="Flag" Sortable="true">
-        @((MarkupString)(context.Country?.HtmlCode ?? string.Empty))
-    </TemplateColumn>
-</QuickGrid>
+<TeamList @rendermode="InteractiveWebAssembly"></TeamList>
 
 @if (isDialogVisible)
 {
@@ -46,26 +37,14 @@ else
     private IQueryable<Team> teams;
     private bool isDialogVisible = false;
 
-    protected override async Task OnInitializedAsync()
-    {
-        await LoadTeamsAsync();
-    }
-
-    private async Task LoadTeamsAsync()
-    {
-        var teamList = await TeamService.GetAllAsync();
-        teams = teamList.AsQueryable();
-    }
-
     private void ShowAddTeamDialog()
     {
         isDialogVisible = true;
     }
 
-    private async Task OnTeamAdded()
+    private void OnTeamAdded()
     {
         isDialogVisible = false;
-        await LoadTeamsAsync();
     }
 
     private void CloseDialog()

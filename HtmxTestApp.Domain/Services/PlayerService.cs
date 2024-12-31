@@ -2,12 +2,7 @@
 
 using HtmxTestApp.Domain.Services.Contracts;
 using HtmxTestApp.Shared.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HtmxTestApp.Domain.Services
 {
@@ -20,38 +15,38 @@ namespace HtmxTestApp.Domain.Services
         }
         public async Task<Player> AddAsync(Player entity)
         {
-            Player player = await unitOfWork.PlayerRepository.Add(entity);
-            await unitOfWork.SaveChanges();
-            return player;  
+            Player player = await unitOfWork.PlayerRepository.AddAsync(entity);
+            await unitOfWork.SaveChangesAsync();
+            return player;
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            Player player = await unitOfWork.PlayerRepository.Get(id);
-            await unitOfWork.PlayerRepository.Delete(player);
+            Player player = await unitOfWork.PlayerRepository.GetByIdAsync(id);
+            unitOfWork.PlayerRepository.Delete(player);
         }
 
-        public async Task<List<Player>> FindAsync(Expression<Func<Player, bool>> predicate)
+        public List<Player> Find(Expression<Func<Player, bool>> predicate)
         {
-            IEnumerable<Player> result =  await unitOfWork.PlayerRepository.Find(predicate);
+            IEnumerable<Player> result = unitOfWork.PlayerRepository.Find(predicate);
             return result.ToList();
         }
 
-        public async Task<List<Player>> GetAllAsync()
+        public List<Player> GetAll()
         {
-            IEnumerable<Player> players = await unitOfWork.PlayerRepository.All();
+            IEnumerable<Player> players = unitOfWork.PlayerRepository.GetAll();
             return players.ToList();
         }
 
         public async Task<Player> GetAsync(Guid id)
         {
-            return await unitOfWork.PlayerRepository.Get(id);
+            return await unitOfWork.PlayerRepository.GetByIdAsync(id);
         }
 
         public async Task<Player> UpdateAsync(Player entity)
         {
-            Player player = await unitOfWork.PlayerRepository.Update(entity);
-            await unitOfWork.SaveChanges();
+            Player player = await unitOfWork.PlayerRepository.UpdateAsync(entity);
+            await unitOfWork.SaveChangesAsync();
             return player;
         }
     }

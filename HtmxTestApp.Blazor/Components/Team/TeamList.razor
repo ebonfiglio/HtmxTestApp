@@ -1,0 +1,31 @@
+﻿@using HtmxTestApp.Domain.Services.Contracts
+@using HtmxTestApp.Shared.Entities
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inject ITeamService TeamService
+
+@if (teams == null)
+{
+    <QuickGrid Items="@teams">
+        <PropertyColumn Property="@(t => t.Id)" Sortable="true" />
+        <TemplateColumn Title="Name" Sortable="true">
+            <a href="/teamform/@context.Id">@context.Name</a>
+        </TemplateColumn>
+        <PropertyColumn Property="@(t => t.Country == null ? "" : t.Country.Name)" Sortable="true" />
+        <TemplateColumn Title="Flag" Sortable="true">
+            @((MarkupString)(context.Country?.HtmlCode ?? string.Empty))
+        </TemplateColumn>
+    </QuickGrid>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    private IQueryable<Team> teams;
+    protected override void OnInitialized()
+    {
+        var teamList = TeamService.GetAll();
+        teams = teamList.AsQueryable();
+    }
+}
