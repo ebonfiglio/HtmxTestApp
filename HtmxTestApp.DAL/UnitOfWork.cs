@@ -3,111 +3,65 @@ using HtmxTestApp.Shared.Entities;
 
 namespace HtmxTestApp.DAL
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
         IRepository<Player> PlayerRepository { get; }
         IRepository<Position> PositionRepository { get; }
-
         IRepository<Team> TeamRepository { get; }
-
         IRepository<GameLog> GameLogRepository { get; }
-
         IRepository<Game> GameRepository { get; }
-
         IRepository<Country> CountryRepository { get; }
 
-        Task SaveChanges();
+        Task SaveChangesAsync();
+        void ClearChangeTracker();
     }
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork(ApplicationDbContext context) : IUnitOfWork
     {
-        private ApplicationDbContext context;
+        private bool _disposed;
+        private IRepository<Player> _playerRepository;
+        public IRepository<Player> PlayerRepository => _playerRepository ??= new PlayerRepository(context);
 
-        public UnitOfWork(ApplicationDbContext context)
-        {
-            this.context = context;
-        }
+        private IRepository<Position> _positionRepository;
+        public IRepository<Position> PositionRepository => _positionRepository ??= new PositionRepository(context);
 
-        private IRepository<Player> playerRepository;
-        public IRepository<Player> PlayerRepository
-        {
-            get
-            {
-                if (playerRepository == null)
-                {
-                    playerRepository = new PlayerRepository(context);
-                }
-                return playerRepository;
-            }
-        }
+        private IRepository<Team> _teamRepository;
+        public IRepository<Team> TeamRepository => _teamRepository ??= new TeamRepository(context);
 
-        private IRepository<Position> positionRepository;
-        public IRepository<Position> PositionRepository
-        {
-            get
-            {
-                if (positionRepository == null)
-                {
-                    positionRepository = new PositionRepository(context);
-                }
-                return positionRepository;
-            }
-        }
+        private IRepository<GameLog> _gameLogRepository;
+        public IRepository<GameLog> GameLogRepository => _gameLogRepository ??= new GameLogRepository(context);
 
-        private IRepository<Team> teamRepository;
-        public IRepository<Team> TeamRepository
-        {
-            get
-            {
-                if (teamRepository == null)
-                {
-                    teamRepository = new TeamRepository(context);
-                }
-                return teamRepository;
-            }
-        }
+        private IRepository<Game> _gameRepository;
+        public IRepository<Game> GameRepository => _gameRepository ??= new GameRepository(context);
 
-        private IRepository<GameLog> gameLogRepository;
-        public IRepository<GameLog> GameLogRepository
-        {
-            get
-            {
-                if (gameLogRepository == null)
-                {
-                    gameLogRepository = new GameLogRepository(context);
-                }
-                return gameLogRepository;
-            }
-        }
+        private IRepository<Country> _countryRepository;
+        public IRepository<Country> CountryRepository => _countryRepository ??= new CountryRepository(context);
 
-        private IRepository<Game> gameRepository;
-        public IRepository<Game> GameRepository
-        {
-            get
-            {
-                if (gameRepository == null)
-                {
-                    gameRepository = new GameRepository(context);
-                }
-                return gameRepository;
-            }
-        }
-
-        private IRepository<Country> countryRepository;
-        public IRepository<Country> CountryRepository
-        {
-            get
-            {
-                if (countryRepository == null)
-                {
-                    countryRepository = new CountryRepository(context);
-                }
-                return countryRepository;
-            }
-        }
-
-        public virtual async Task SaveChanges()
+        public async Task SaveChangesAsync()
         {
             await context.SaveChangesAsync();
+        }
+
+        public void ClearChangeTracker()
+        {
+            context.ChangeTracker.Clear();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    context.Dispose();
+                }
+                _disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

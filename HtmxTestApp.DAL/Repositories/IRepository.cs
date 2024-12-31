@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 
 namespace HtmxTestApp.DAL.Repositories
 {
     public interface IRepository<T>
     {
-        Task<T> Add(T entity);
-        Task<T> Update(T entity);
-        Task<T> Get(Guid id);
-        Task<T> Get(string token);
-        Task<T> GetByUserId(string userId);
-        Task<IEnumerable<T>> All();
-        Task<IEnumerable<T>> Find(Expression<Func<T, bool>> predicate);
-        Task Delete(T entity);
-        Task SaveChanges();
+        Task<T> AddAsync(T entity);
+
+        Task<T> UpdateAsync(T entity);
+
+        Task<T> GetByIdAsync(Guid id, bool asNoTracking = false);
+
+        IQueryable<T> GetAll(bool asNoTracking = false);
+
+        IQueryable<T> Find(Expression<Func<T, bool>> predicate, bool asNoTracking = false);
+
+        void Delete(T entity);
     }
 }

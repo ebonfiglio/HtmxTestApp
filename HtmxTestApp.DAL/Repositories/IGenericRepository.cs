@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HtmxTestApp.DAL.Repositories
 {
@@ -20,55 +15,51 @@ namespace HtmxTestApp.DAL.Repositories
             {
                 _context = context;
             }
-            public virtual async Task<T> Add(T entity)
+            public virtual async Task<T> AddAsync(T entity)
             {
-                var result = await _context.AddAsync(entity);
+                var result = await _context.Set<T>().AddAsync(entity);
                 return result.Entity;
             }
 
-            public virtual async Task<IEnumerable<T>> All()
-            {
-                return await Task.Run(() => _context.Set<T>());
-            }
-
-            public async Task Delete(T entity)
-            {
-                await Task.Run(() => _context.Remove(entity));
-            }
-
-            public virtual async Task<IEnumerable<T>> Find(Expression<Func<T, bool>> predicate)
-            {
-                return await Task.Run(() => _context.Set<T>()
-                    .AsQueryable()
-                    .Where(predicate));
-            }
-
-            public virtual async Task<T> Get(Guid id)
-            {
-                var item = await _context.Set<T>().FindAsync(id);
-                return item;
-            }
-
-            public virtual async Task<T> GetByUserId(string userId)
-            {
-                var item = await _context.Set<T>().FindAsync(userId);
-                return item;
-            }
-
-            public virtual async Task<T> Get(string token)
-            {
-                throw new NotImplementedException();
-            }
-
-            public virtual async Task SaveChanges()
-            {
-                await _context.SaveChangesAsync();
-            }
-
-            public virtual async Task<T> Update(T entity)
+            public virtual Task<T> UpdateAsync(T entity)
             {
                 _context.Entry(entity).State = EntityState.Modified;
-                return await Task.Run(() => entity);
+                return Task.FromResult(entity);
+            }
+
+            public virtual async Task<T> GetByIdAsync(Guid id, bool asNoTracking = false)
+            {
+                var query = _context.Set<T>().AsQueryable();
+                if (asNoTracking)
+                {
+                    query = query.AsNoTracking();
+                }
+                return await query.FirstOrDefaultAsync(e => EF.Property<Guid>(e, "Id") == id);
+            }
+
+            public virtual IQueryable<T> GetAll(bool asNoTracking = false)
+            {
+                var query = _context.Set<T>().AsQueryable();
+                if (asNoTracking)
+                {
+                    query = query.AsNoTracking();
+                }
+                return query;
+            }
+
+            public virtual IQueryable<T> Find(Expression<Func<T, bool>> predicate, bool asNoTracking = false)
+            {
+                var query = _context.Set<T>().Where(predicate);
+                if (asNoTracking)
+                {
+                    query = query.AsNoTracking();
+                }
+                return query;
+            }
+
+            public virtual void Delete(T entity)
+            {
+                _context.Set<T>().Remove(entity);
             }
         }
     }
