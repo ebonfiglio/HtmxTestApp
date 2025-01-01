@@ -26,6 +26,7 @@ namespace HtmxTestApp.Blazor
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
+                .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
 
             builder.Services.AddScoped<IRepository<Player>, PlayerRepository>();
@@ -57,9 +58,8 @@ namespace HtmxTestApp.Blazor
             app.UseAntiforgery();
 
             app.MapStaticAssets();
-            app.UseStaticFiles();
-            app.UseBlazorFrameworkFiles();
             app.MapRazorComponents<App>()
+                .AddInteractiveServerRenderMode()
                 .AddInteractiveWebAssemblyRenderMode();
 
             app.Run();

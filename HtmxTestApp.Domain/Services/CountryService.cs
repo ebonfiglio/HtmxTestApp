@@ -1,6 +1,7 @@
 ﻿using HtmxTestApp.DAL;
 using HtmxTestApp.Domain.Services.Contracts;
 using HtmxTestApp.Shared.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace HtmxTestApp.Domain.Services
@@ -25,16 +26,16 @@ namespace HtmxTestApp.Domain.Services
             unitOfWork.CountryRepository.Delete(country);
         }
 
-        public List<Country> Find(Expression<Func<Country, bool>> predicate)
+        public async Task<List<Country>> FindAsync(Expression<Func<Country, bool>> predicate)
         {
-            IEnumerable<Country> result = unitOfWork.CountryRepository.Find(predicate);
-            return result.ToList();
+            IQueryable<Country> result = unitOfWork.CountryRepository.Find(predicate);
+            return await result.ToListAsync();
         }
 
-        public List<Country> GetAll()
+        public async Task<List<Country>> GetAllAsync()
         {
-            IEnumerable<Country> countrys = unitOfWork.CountryRepository.GetAll();
-            return countrys.ToList();
+            IQueryable<Country> countrys = unitOfWork.CountryRepository.GetAll();
+            return await countrys.ToListAsync();
         }
 
         public async Task<Country> GetAsync(Guid id)

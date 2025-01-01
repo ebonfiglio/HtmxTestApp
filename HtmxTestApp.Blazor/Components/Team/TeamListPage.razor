@@ -12,43 +12,11 @@
          <button class="btn btn-secondary">Add Team by Dialog</button>
     </form>
 </div>
-<TeamList @rendermode="InteractiveWebAssembly"></TeamList>
+<TeamList></TeamList>
 
-@if (isDialogVisible)
-{
-    <div class="modal-backdrop">
-        <div class="modal">
-            <div class="modal-header">
-                <h5 class="modal-title">Add Team</h5>
-                <button type="button" class="close" @onclick="CloseDialog">&times;</button>
-            </div>
-            <div class="modal-body">
-                <TeamForm OnSave="OnTeamAdded" OnCancel="CloseDialog" SubmitButtonText="Add" />
-            </div>
-        </div>
-    </div>
-}
-else
-{
-    <form @formname="TeamForm"></form>
-}
+
+
 
 @code {
-    private IQueryable<Team> teams;
-    private bool isDialogVisible = false;
 
-    private void ShowAddTeamDialog()
-    {
-        isDialogVisible = true;
-    }
-
-    private void OnTeamAdded()
-    {
-        isDialogVisible = false;
-    }
-
-    private void CloseDialog()
-    {
-        isDialogVisible = false;
-    }
 }

@@ -13,9 +13,9 @@ namespace HtmxTestApp.Pages.Countries
         {
             this.countryService = countryService;
         }
-        public void OnGet()
+        public async Task OnGet()
         {
-            Countries = countryService.GetAll();
+            Countries = await countryService.GetAllAsync();
         }
     }
 }

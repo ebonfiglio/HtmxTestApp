@@ -2,8 +2,8 @@
 @using HtmxTestApp.Shared.Entities
 @using Microsoft.AspNetCore.Components.QuickGrid
 @inject ITeamService TeamService
-
-@if (teams == null)
+@attribute [StreamRendering]
+@if (teams != null)
 {
     <QuickGrid Items="@teams">
         <PropertyColumn Property="@(t => t.Id)" Sortable="true" />
@@ -23,9 +23,9 @@ else
 
 @code {
     private IQueryable<Team> teams;
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        var teamList = TeamService.GetAll();
+        var teamList = await TeamService.GetAllAsync();
         teams = teamList.AsQueryable();
     }
 }

@@ -15,9 +15,9 @@ namespace HtmxTestApp.WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetList()
+        public async Task<IActionResult> GetList()
         {
-            List<Team> teams = _teamService.GetAll();
+            List<Team> teams = await _teamService.GetAllAsync();
             return Ok(teams);
         }
 

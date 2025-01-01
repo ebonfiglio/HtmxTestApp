@@ -13,9 +13,9 @@ namespace HtmxTestApp.Pages.Teams
         {
             this.teamService = teamService;
         }
-        public void OnGet()
+        public async Task OnGet()
         {
-            Teams = teamService.GetAll();
+            Teams = await teamService.GetAllAsync();
         }
     }
 }

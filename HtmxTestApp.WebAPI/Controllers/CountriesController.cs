@@ -15,9 +15,9 @@ namespace HtmxTestApp.WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetList()
+        public async Task<IActionResult> GetList()
         {
-            List<Country> countries = _countryService.GetAll();
+            List<Country> countries = await _countryService.GetAllAsync();
             return Ok(countries);
         }
     }

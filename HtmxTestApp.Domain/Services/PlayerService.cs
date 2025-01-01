@@ -2,6 +2,7 @@
 
 using HtmxTestApp.Domain.Services.Contracts;
 using HtmxTestApp.Shared.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace HtmxTestApp.Domain.Services
@@ -26,16 +27,16 @@ namespace HtmxTestApp.Domain.Services
             unitOfWork.PlayerRepository.Delete(player);
         }
 
-        public List<Player> Find(Expression<Func<Player, bool>> predicate)
+        public async Task<List<Player>> FindAsync(Expression<Func<Player, bool>> predicate)
         {
-            IEnumerable<Player> result = unitOfWork.PlayerRepository.Find(predicate);
-            return result.ToList();
+            IQueryable<Player> result = unitOfWork.PlayerRepository.Find(predicate);
+            return await result.ToListAsync();
         }
 
-        public List<Player> GetAll()
+        public async Task<List<Player>> GetAllAsync()
         {
-            IEnumerable<Player> players = unitOfWork.PlayerRepository.GetAll();
-            return players.ToList();
+            IQueryable<Player> players = unitOfWork.PlayerRepository.GetAll();
+            return await players.ToListAsync();
         }
 
         public async Task<Player> GetAsync(Guid id)

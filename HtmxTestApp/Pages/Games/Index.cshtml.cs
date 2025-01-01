@@ -13,9 +13,9 @@ namespace HtmxTestApp.Pages.Games
         {
             this.gameService = gameService;
         }
-        public void OnGet()
+        public async Task OnGet()
         {
-            Games = gameService.GetAll();
+            Games = await gameService.GetAllAsync();
         }
     }
 }
