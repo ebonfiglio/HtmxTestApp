@@ -8,12 +8,12 @@ namespace HtmxTestApp.DAL.Repositories
 
         Task<T> UpdateAsync(T entity);
 
-        Task<T> GetByIdAsync(Guid id, bool asNoTracking = false);
+        Task<T> GetByIdAsync(Guid id, bool asNoTracking = false, params Expression<Func<T, object>>[] includes);
 
-        IQueryable<T> GetAll(bool asNoTracking = false);
+        IQueryable<T> GetAll(bool asNoTracking = false, params Expression<Func<T, object>>[] includes);
 
-        IQueryable<T> Find(Expression<Func<T, bool>> predicate, bool asNoTracking = false);
+        IQueryable<T> Find(Expression<Func<T, bool>> predicate, bool asNoTracking = false, params Expression<Func<T, object>>[] includes);
 
-        void Delete(T entity);
+        Task DeleteAsync(T entity);
     }
 }

@@ -16,14 +16,13 @@ namespace HtmxTestApp.Domain.Services
         public async Task<Team> AddAsync(Team entity)
         {
             Team team = await unitOfWork.TeamRepository.AddAsync(entity);
-            await unitOfWork.SaveChangesAsync();
             return team;
         }
 
         public async Task DeleteAsync(Guid id)
         {
             Team team = await unitOfWork.TeamRepository.GetByIdAsync(id);
-            unitOfWork.TeamRepository.Delete(team);
+            await unitOfWork.TeamRepository.DeleteAsync(team);
         }
 
         public async Task<List<Team>> FindAsync(Expression<Func<Team, bool>> predicate)
@@ -45,7 +44,6 @@ namespace HtmxTestApp.Domain.Services
         public async Task<Team> UpdateAsync(Team entity)
         {
             Team team = await unitOfWork.TeamRepository.UpdateAsync(entity);
-            await unitOfWork.SaveChangesAsync();
             return team;
         }
     }

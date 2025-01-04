@@ -2,7 +2,6 @@
 @using HtmxTestApp.Shared.Entities
 @using Microsoft.AspNetCore.Components.QuickGrid
 @inject ITeamService TeamService
-@attribute [StreamRendering]
 @if (teams != null)
 {
     <QuickGrid Items="@teams">

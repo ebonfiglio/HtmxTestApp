@@ -1,16 +1,12 @@
 ﻿using HtmxTestApp.Shared.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using static HtmxTestApp.DAL.Repositories.IGenericRepository;
 
 namespace HtmxTestApp.DAL.Repositories
 {
     public class CountryRepository : GenericRepository<Country>
     {
-        public CountryRepository(ApplicationDbContext context) : base(context)
+        public CountryRepository(IDbContextFactory<ApplicationDbContext> _contextFactory) : base(_contextFactory)
         {
         }
     }

@@ -1,22 +1,35 @@
 ﻿@page "/teams"
+@using HtmxTestApp.Blazor.Helpers
 @using HtmxTestApp.Domain.Services.Contracts
 @using HtmxTestApp.Shared.Entities
 @using Microsoft.AspNetCore.Components.QuickGrid
+@using Microsoft.AspNetCore.Components.Web.HtmlRendering
 @inject ITeamService TeamService
+@inject BlazorRenderer BlazorRenderer
 
 <h3>Teams</h3>
 <div class="mb-3">
     <a class="btn btn-primary" href="/teamform">Add Team</a>
-    <form method="post" data-enhance="true" @onsubmit=@(() => ShowAddTeamDialog()) @formname="TeamDialog">
-        <AntiforgeryToken></AntiforgeryToken>
-         <button class="btn btn-secondary">Add Team by Dialog</button>
-    </form>
+    <DialogButton @ref="dialogButton" HTMLContent="@dialogHtmlContent" OnSave="Save" OnCancel="Cancel" />
 </div>
 <TeamList></TeamList>
 
-
-
-
 @code {
+    private DialogButton dialogButton;
+    string dialogHtmlContent = string.Empty;
 
+    protected override async Task OnInitializedAsync()
+    {
+        dialogHtmlContent = await BlazorRenderer.RenderComponent<TeamForm>();
+    }
+
+    private async Task Save()
+    {
+        // Implement save logic here
+    }
+
+    private void Cancel()
+    {
+        // Implement cancel logic here
+    }
 }

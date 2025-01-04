@@ -1,16 +1,12 @@
 ﻿using HtmxTestApp.Shared.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using static HtmxTestApp.DAL.Repositories.IGenericRepository;
 
 namespace HtmxTestApp.DAL.Repositories
 {
     public class GameLogRepository : GenericRepository<GameLog>
     {
-        public GameLogRepository(ApplicationDbContext context) : base(context)
+        public GameLogRepository(IDbContextFactory<ApplicationDbContext> _contextFactory) : base(_contextFactory)
         {
         }
     }

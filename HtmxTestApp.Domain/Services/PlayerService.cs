@@ -17,14 +17,13 @@ namespace HtmxTestApp.Domain.Services
         public async Task<Player> AddAsync(Player entity)
         {
             Player player = await unitOfWork.PlayerRepository.AddAsync(entity);
-            await unitOfWork.SaveChangesAsync();
             return player;
         }
 
         public async Task DeleteAsync(Guid id)
         {
             Player player = await unitOfWork.PlayerRepository.GetByIdAsync(id);
-            unitOfWork.PlayerRepository.Delete(player);
+            await unitOfWork.PlayerRepository.DeleteAsync(player);
         }
 
         public async Task<List<Player>> FindAsync(Expression<Func<Player, bool>> predicate)
@@ -47,7 +46,6 @@ namespace HtmxTestApp.Domain.Services
         public async Task<Player> UpdateAsync(Player entity)
         {
             Player player = await unitOfWork.PlayerRepository.UpdateAsync(entity);
-            await unitOfWork.SaveChangesAsync();
             return player;
         }
     }

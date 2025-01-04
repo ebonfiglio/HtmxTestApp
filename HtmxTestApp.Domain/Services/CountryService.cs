@@ -16,14 +16,13 @@ namespace HtmxTestApp.Domain.Services
         public async Task<Country> AddAsync(Country entity)
         {
             Country country = await unitOfWork.CountryRepository.AddAsync(entity);
-            await unitOfWork.SaveChangesAsync();
             return country;
         }
 
         public async Task DeleteAsync(Guid id)
         {
             Country country = await unitOfWork.CountryRepository.GetByIdAsync(id);
-            unitOfWork.CountryRepository.Delete(country);
+            await unitOfWork.CountryRepository.DeleteAsync(country);
         }
 
         public async Task<List<Country>> FindAsync(Expression<Func<Country, bool>> predicate)
@@ -46,7 +45,6 @@ namespace HtmxTestApp.Domain.Services
         public async Task<Country> UpdateAsync(Country entity)
         {
             Country country = await unitOfWork.CountryRepository.UpdateAsync(entity);
-            await unitOfWork.SaveChangesAsync();
             return country;
         }
     }

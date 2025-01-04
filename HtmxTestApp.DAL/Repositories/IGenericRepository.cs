@@ -5,62 +5,83 @@ namespace HtmxTestApp.DAL.Repositories
 {
     public interface IGenericRepository
     {
-        public abstract class GenericRepository<T>
-         : IRepository<T> where T : class
+        public abstract class GenericRepository<T> : IRepository<T> where T : class
         {
+            private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
 
-            protected ApplicationDbContext _context;
-
-            public GenericRepository(ApplicationDbContext context)
+            public GenericRepository(IDbContextFactory<ApplicationDbContext> contextFactory)
             {
-                _context = context;
+                _contextFactory = contextFactory;
             }
+
             public virtual async Task<T> AddAsync(T entity)
             {
-                var result = await _context.Set<T>().AddAsync(entity);
+                using var context = _contextFactory.CreateDbContext();
+                var result = await context.Set<T>().AddAsync(entity);
+                await context.SaveChangesAsync();
                 return result.Entity;
             }
 
-            public virtual Task<T> UpdateAsync(T entity)
+            public virtual async Task<T> UpdateAsync(T entity)
             {
-                _context.Entry(entity).State = EntityState.Modified;
-                return Task.FromResult(entity);
+                using var context = _contextFactory.CreateDbContext();
+                context.Entry(entity).State = EntityState.Modified;
+                await context.SaveChangesAsync();
+                return entity;
             }
 
-            public virtual async Task<T> GetByIdAsync(Guid id, bool asNoTracking = false)
+            public virtual async Task<T> GetByIdAsync(Guid id, bool asNoTracking = false, params Expression<Func<T, object>>[] includes)
             {
-                var query = _context.Set<T>().AsQueryable();
+                using var context = _contextFactory.CreateDbContext();
+                var query = context.Set<T>().AsQueryable();
                 if (asNoTracking)
                 {
                     query = query.AsNoTracking();
+                }
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
                 }
                 return await query.FirstOrDefaultAsync(e => EF.Property<Guid>(e, "Id") == id);
             }
 
-            public virtual IQueryable<T> GetAll(bool asNoTracking = false)
+            public virtual IQueryable<T> GetAll(bool asNoTracking = false, params Expression<Func<T, object>>[] includes)
             {
-                var query = _context.Set<T>().AsQueryable();
+                var context = _contextFactory.CreateDbContext();
+                var query = context.Set<T>().AsQueryable();
                 if (asNoTracking)
                 {
                     query = query.AsNoTracking();
                 }
-                return query;
-            }
-
-            public virtual IQueryable<T> Find(Expression<Func<T, bool>> predicate, bool asNoTracking = false)
-            {
-                var query = _context.Set<T>().Where(predicate);
-                if (asNoTracking)
+                foreach (var include in includes)
                 {
-                    query = query.AsNoTracking();
+                    query = query.Include(include);
                 }
                 return query;
             }
 
-            public virtual void Delete(T entity)
+            public virtual IQueryable<T> Find(Expression<Func<T, bool>> predicate, bool asNoTracking = false, params Expression<Func<T, object>>[] includes)
             {
-                _context.Set<T>().Remove(entity);
+                var context = _contextFactory.CreateDbContext();
+                var query = context.Set<T>().Where(predicate);
+                if (asNoTracking)
+                {
+                    query = query.AsNoTracking();
+                }
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+                return query;
+            }
+
+            public virtual async Task DeleteAsync(T entity)
+            {
+                using var context = _contextFactory.CreateDbContext();
+                context.Set<T>().Remove(entity);
+                await context.SaveChangesAsync();
             }
         }
+
     }
 }

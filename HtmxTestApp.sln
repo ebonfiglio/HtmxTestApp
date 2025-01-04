@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HtmxTestApp.WebAPI", "HtmxT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmxTestApp.Blazor", "HtmxTestApp.Blazor\HtmxTestApp.Blazor.csproj", "{CA6C455D-85CE-432A-BD89-71A5541F1FCF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HtmxTestApp.BlazorWASM.Client", "HtmxTestApp.BlazorWASM\HtmxTestApp.BlazorWASM.Client\HtmxTestApp.BlazorWASM.Client.csproj", "{CFA72A88-E95C-4C02-A9E9-18408724A553}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{CA6C455D-85CE-432A-BD89-71A5541F1FCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA6C455D-85CE-432A-BD89-71A5541F1FCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA6C455D-85CE-432A-BD89-71A5541F1FCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFA72A88-E95C-4C02-A9E9-18408724A553}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFA72A88-E95C-4C02-A9E9-18408724A553}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFA72A88-E95C-4C02-A9E9-18408724A553}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFA72A88-E95C-4C02-A9E9-18408724A553}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

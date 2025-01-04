@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HtmxTestApp.BlazorWASM\HtmxTestApp.BlazorWASM.Client\HtmxTestApp.BlazorWASM.Client.csproj" />
     <ProjectReference Include="..\HtmxTestApp.Domain\HtmxTestApp.Domain.csproj" />
     <ProjectReference Include="..\HtmxTestApp.Shared\HtmxTestApp.Shared.csproj" />
   </ItemGroup>

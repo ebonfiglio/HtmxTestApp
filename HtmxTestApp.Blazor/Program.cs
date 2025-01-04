@@ -1,9 +1,9 @@
 using HtmxTestApp.Blazor.Components;
+using HtmxTestApp.Blazor.Helpers;
 using HtmxTestApp.DAL;
-using HtmxTestApp.DAL.Repositories;
 using HtmxTestApp.Domain.Services;
 using HtmxTestApp.Domain.Services.Contracts;
-using HtmxTestApp.Shared.Entities;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
 
 namespace HtmxTestApp.Blazor
@@ -21,32 +21,33 @@ namespace HtmxTestApp.Blazor
 
             var defaultConnectionString = config.GetConnectionString("Default");
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                        options.UseLazyLoadingProxies().UseSqlServer(defaultConnectionString));
+
+            builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
+    options.UseSqlServer(defaultConnectionString));
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
-                .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
 
-            builder.Services.AddScoped<IRepository<Player>, PlayerRepository>();
-            builder.Services.AddScoped<IRepository<Team>, TeamRepository>();
-            builder.Services.AddScoped<IRepository<Game>, GameRepository>();
-            builder.Services.AddScoped<IRepository<GameLog>, GameLogRepository>();
-            builder.Services.AddScoped<IRepository<Position>, PositionRepository>();
-            builder.Services.AddScoped<IRepository<Country>, CountryRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IPlayerService, PlayerService>();
             builder.Services.AddScoped<ITeamService, TeamService>();
             builder.Services.AddScoped<ICountryService, CountryService>();
             builder.Services.AddScoped<IGameService, GameService>();
 
+            builder.Services.AddScoped<HtmlRenderer>();
+            builder.Services.AddScoped<BlazorRenderer>();
+
             builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseWebAssemblyDebugging();
+            }
+            else
             {
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
@@ -59,8 +60,8 @@ namespace HtmxTestApp.Blazor
 
             app.MapStaticAssets();
             app.MapRazorComponents<App>()
-                .AddInteractiveServerRenderMode()
-                .AddInteractiveWebAssemblyRenderMode();
+                .AddInteractiveWebAssemblyRenderMode()
+                .AddAdditionalAssemblies(typeof(BlazorWASM.Client._Imports).Assembly);
 
             app.Run();
         }
