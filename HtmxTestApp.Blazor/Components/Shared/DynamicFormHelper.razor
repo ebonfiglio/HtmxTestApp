@@ -1,0 +1,10 @@
+﻿<form data-enhance method="post" @formname="@FormName" @onsubmit="@OnSubmit">
+</form>
+
+@code {
+    [Parameter]
+    public string FormName { get; set; }
+
+    [Parameter]
+    public EventCallback OnSubmit { get; set; }
+}

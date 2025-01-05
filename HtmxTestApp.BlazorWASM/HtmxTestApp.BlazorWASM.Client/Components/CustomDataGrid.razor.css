@@ -1,0 +1,26 @@
+﻿.custom-grid-container {
+    margin: 1rem 0;
+}
+
+.custom-grid-table thead th {
+    background-color: #f0f0f0;
+    text-align: left;
+    vertical-align: bottom;
+}
+
+.sort-icons {
+    margin-left: 4px;
+    cursor: pointer;
+}
+
+.grid-filters {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+    .grid-filters .filter-item {
+        display: flex;
+        flex-direction: column;
+    }

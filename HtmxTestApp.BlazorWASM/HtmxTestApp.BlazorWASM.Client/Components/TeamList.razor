@@ -1,0 +1,21 @@
+﻿@using Microsoft.AspNetCore.Components.QuickGrid
+@using HtmxTestApp.Shared.Models
+@rendermode InteractiveWebAssembly
+
+<QuickGrid Items="@Teams" Pagination="@pagination">
+    <PropertyColumn Property="@(t => t.Id)" Sortable="true" />
+    <TemplateColumn Title="Name" Sortable="true">
+        <a href="/teamform/@context.Id">@context.Name</a>
+    </TemplateColumn>
+    @* <PropertyColumn Property="@(t => t.Country == null ? "" : t.Country.Name)" Sortable="true" />
+    <TemplateColumn Title="Flag" Sortable="true">
+        @((MarkupString)(context.Country?.HtmlCode ?? string.Empty))
+    </TemplateColumn> *@
+</QuickGrid>
+<Paginator  State="@pagination" />
+@code {
+    PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
+
+    [Parameter]
+    public IQueryable<TeamDto> Teams { get; set; }
+}

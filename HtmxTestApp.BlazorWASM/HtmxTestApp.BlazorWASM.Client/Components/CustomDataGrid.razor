@@ -1,0 +1,84 @@
+﻿@using System.Linq.Expressions
+@using HtmxTestApp.BlazorWASM.Client.Attributes
+@attribute [type: RenderModeInteractiveWebAssembly]
+@typeparam TItem
+
+<div class="custom-grid-container">
+
+    <!-- Filter row (if any columns are filterable) -->
+    @if (ShowFilterRow && Columns.Any(c => c.Filterable))
+    {
+        <div class="grid-filters">
+            @foreach (var column in Columns)
+            {
+                if (column.Filterable)
+                {
+                    <div class="filter-item">
+                        <label>@column.Title</label>
+                        <input @bind="@filters[column.Field]" @bind:event="oninput" />
+                    </div>
+                }
+            }
+            <button class="btn btn-sm btn-primary" @onclick="ApplyFilters">Apply</button>
+        </div>
+    }
+
+    <table class="table table-bordered custom-grid-table">
+        <thead>
+            <tr>
+                @foreach (var column in Columns)
+                {
+                    <th scope="col">
+                        @column.Title
+                        @if (column.Sortable)
+                        {
+                            <span class="sort-icons">
+                                <i class="sort-asc" @onclick="@(() => SortByColumn(column, true))">&#9650;</i>
+                                <i class="sort-desc" @onclick="@(() => SortByColumn(column, false))">&#9660;</i>
+                            </span>
+                        }
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @if (PagedData == null || !PagedData.Any())
+            {
+                <tr>
+                    <td colspan="@Columns.Count">No data found</td>
+                </tr>
+            }
+            else
+            {
+                foreach (var item in PagedData)
+                {
+                    <tr>
+                        @foreach (var column in Columns)
+                        {
+                            <td>
+                                @if (column.CellTemplate != null)
+                                {
+                                    @column.CellTemplate(item)
+                                }
+                                else
+                                {
+                                    @GetPropertyValue(item, column.Field)
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <!-- Pagination controls -->
+    @if (PageSize > 0 && FilteredData.Count > 0)
+    {
+        <div class="pagination-container">
+            <button class="btn btn-sm btn-secondary" @onclick="PrevPage" disabled="@(!CanGoPrev)">Previous</button>
+            <span>Page @CurrentPage of @TotalPages</span>
+            <button class="btn btn-sm btn-secondary" @onclick="NextPage" disabled="@(!CanGoNext)">Next</button>
+        </div>
+    }
+</div>

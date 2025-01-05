@@ -1,5 +1,8 @@
 ﻿@using HtmxTestApp.Domain.Services.Contracts
+@using HtmxTestApp.Shared.Models
 @using HtmxTestApp.Shared.Entities
+@using HtmxTestApp.Shared.Extensions
+
 @inject ITeamService TeamService
 @inject ICountryService CountryService
 @inject IHttpContextAccessor HttpContextAccessor
@@ -40,8 +43,11 @@
     [Parameter]
     public string SubmitButtonText { get; set; } = "Save";
 
+    public static string ModelName { get; set; } = nameof(TeamDto).ToCamelCase();
+
     [SupplyParameterFromForm]
     private TeamDto teamDto { get; set; } = new();
+
     private List<Country> countries = new();
 
     protected override async Task OnInitializedAsync()
@@ -56,46 +62,8 @@
         }
     }
 
-    public async Task HandleValidSubmit()
+    private async Task HandleValidSubmit()
     {
-        var form = HttpContextAccessor.HttpContext.Request.Form;
-        var clickedButton = form["submitButton"].ToString();
-
-        if (clickedButton == "Save")
-        {
-            var team = new Team
-                {
-                    Id = TeamId,
-                    Name = teamDto.Name,
-                    CountryId = teamDto.CountryId
-                };
-
-            if (TeamId.HasValue)
-            {
-                await TeamService.UpdateAsync(team);
-            }
-            else
-            {
-                await TeamService.AddAsync(team);
-            }
-
-            if (OnSave.HasDelegate)
-            {
-                await OnSave.InvokeAsync(null);
-            }
-        }
-        else if (clickedButton == "Cancel")
-        {
-            if (OnCancel.HasDelegate)
-            {
-                await OnCancel.InvokeAsync(null);
-            }
-        }
-    }
-
-    public class TeamDto
-    {
-        public string Name { get; set; }
-        public Guid? CountryId { get; set; }
+       
     }
 }

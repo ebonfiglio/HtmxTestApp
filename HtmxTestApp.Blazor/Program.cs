@@ -28,6 +28,7 @@ namespace HtmxTestApp.Blazor
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveWebAssemblyComponents();
+            builder.Services.AddQuickGridEntityFrameworkAdapter();
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IPlayerService, PlayerService>();

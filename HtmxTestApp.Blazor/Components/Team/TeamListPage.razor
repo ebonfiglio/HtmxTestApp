@@ -1,7 +1,9 @@
 ﻿@page "/teams"
+@using HtmxTestApp.Blazor.Components.Shared
 @using HtmxTestApp.Blazor.Helpers
 @using HtmxTestApp.Domain.Services.Contracts
 @using HtmxTestApp.Shared.Entities
+@using HtmxTestApp.Shared.Models
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using Microsoft.AspNetCore.Components.Web.HtmlRendering
 @inject ITeamService TeamService
@@ -13,23 +15,26 @@
     <a class="btn btn-primary" href="/teamform">Add Team</a>
     <DialogButton HTMLContent="@dialogHtmlContent" />
 </div>
-<TeamList @ref="teamList"></TeamList>
-<form method="post" data-enhance @formname="TeamForm" @onsubmit="HandleValidSubmit">
-</form>
+<CustomDataGrid TItem="TeamDto"
+Data="@teams"
+PageSize="5"
+ShowFilterRow="true" />
+
+<DynamicFormHelper FormName="TeamForm" OnSubmit="HandleValidSubmit"></DynamicFormHelper>
 
 @code {
-    private DialogButton dialogButton;
-    private TeamList teamList;
     string dialogHtmlContent = string.Empty;
-
+    IEnumerable<TeamDto> teams;
     protected override async Task OnInitializedAsync()
     {
         dialogHtmlContent = await BlazorRenderer.RenderComponent<TeamForm>();
+        var result = await TeamService.GetAllAsync();
+        teams = result.Select(l => new TeamDto { Id = l.Id ?? Guid.Empty, CountryId = l.CountryId, Name = l.Name }).ToList();
     }
 
     private async Task Save()
     {
-        await teamList.LoadTeams();
+       
     }
 
     private void Cancel()
@@ -38,7 +43,43 @@
 
     public async Task HandleValidSubmit()
     {
-        var form = HttpContextAccessor.HttpContext.Request.Form;
-        Console.WriteLine("test");
+        IFormCollection form = HttpContextAccessor.HttpContext.Request.Form;
+        string modelName = TeamForm.ModelName;
+
+        Team team = new();
+
+        foreach (var key in form.Keys)
+        {
+            if (key.StartsWith(modelName + "."))
+            {
+                var propertyName = key.Substring(modelName.Length + 1);
+                var propertyValue = form[key].ToString();
+
+                var property = typeof(Team).GetProperty(propertyName);
+                if (property != null && property.CanWrite)
+                {
+                    object convertedValue;
+                    if (property.PropertyType == typeof(Guid?))
+                    {
+                        convertedValue = string.IsNullOrEmpty(propertyValue) ? (Guid?)null : Guid.Parse(propertyValue);
+                    }
+                    else
+                    {
+                        convertedValue = Convert.ChangeType(propertyValue, property.PropertyType);
+                    }
+                    property.SetValue(team, convertedValue);
+                }
+            }
+        }
+        var clickedButton = form["submitButton"].ToString();
+        if (clickedButton == "Save")
+        {
+            await TeamService.AddAsync(team);
+        }
+
+        else if (clickedButton == "Cancel")
+        {
+            
+        }
     }
 }
