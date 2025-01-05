@@ -6,16 +6,20 @@
 @using Microsoft.AspNetCore.Components.Web.HtmlRendering
 @inject ITeamService TeamService
 @inject BlazorRenderer BlazorRenderer
+@inject IHttpContextAccessor HttpContextAccessor
 
 <h3>Teams</h3>
 <div class="mb-3">
     <a class="btn btn-primary" href="/teamform">Add Team</a>
-    <DialogButton @ref="dialogButton" HTMLContent="@dialogHtmlContent" OnSave="Save" OnCancel="Cancel" />
+    <DialogButton HTMLContent="@dialogHtmlContent" />
 </div>
-<TeamList></TeamList>
+<TeamList @ref="teamList"></TeamList>
+<form method="post" data-enhance @formname="TeamForm" @onsubmit="HandleValidSubmit">
+</form>
 
 @code {
     private DialogButton dialogButton;
+    private TeamList teamList;
     string dialogHtmlContent = string.Empty;
 
     protected override async Task OnInitializedAsync()
@@ -25,11 +29,16 @@
 
     private async Task Save()
     {
-        // Implement save logic here
+        await teamList.LoadTeams();
     }
 
     private void Cancel()
     {
-        // Implement cancel logic here
+    }
+
+    public async Task HandleValidSubmit()
+    {
+        var form = HttpContextAccessor.HttpContext.Request.Form;
+        Console.WriteLine("test");
     }
 }

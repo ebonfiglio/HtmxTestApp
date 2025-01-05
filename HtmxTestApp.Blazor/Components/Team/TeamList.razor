@@ -24,6 +24,11 @@ else
     private IQueryable<Team> teams;
     protected override async Task OnInitializedAsync()
     {
+        await LoadTeams();
+    }
+
+    public async Task LoadTeams()
+    {
         var teamList = await TeamService.GetAllAsync();
         teams = teamList.AsQueryable();
     }

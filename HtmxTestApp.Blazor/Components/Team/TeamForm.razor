@@ -2,8 +2,12 @@
 @using HtmxTestApp.Shared.Entities
 @inject ITeamService TeamService
 @inject ICountryService CountryService
+@inject IHttpContextAccessor HttpContextAccessor
 
-<div>
+<EditForm Enhance="true" Model="@teamDto" OnValidSubmit="HandleValidSubmit" FormName="TeamForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
     <div class="form-group">
         <label for="name">Name</label>
         <InputText id="name" class="form-control" @bind-Value="teamDto.Name" />
@@ -19,23 +23,24 @@
         </InputSelect>
     </div>
 
-    <button class="btn btn-primary" @onclick="Save">Save</button>
-    <button class="btn btn-secondary" @onclick="Cancel">Cancel</button>
-</div>
+    <button type="submit" class="btn btn-primary" name="submitButton" value="Save">@SubmitButtonText</button>
+    <button type="submit" class="btn btn-secondary" name="submitButton" value="Cancel">Cancel</button>
+</EditForm>
 
 @code {
     [Parameter]
     public Guid? TeamId { get; set; }
 
     [Parameter]
-    public EventCallback Save { get; set; }
+    public EventCallback OnSave { get; set; }
 
     [Parameter]
-    public EventCallback Cancel { get; set; }
+    public EventCallback OnCancel { get; set; }
 
     [Parameter]
     public string SubmitButtonText { get; set; } = "Save";
 
+    [SupplyParameterFromForm]
     private TeamDto teamDto { get; set; } = new();
     private List<Country> countries = new();
 
@@ -48,6 +53,43 @@
             var team = await TeamService.GetAsync(TeamId.Value);
             teamDto.Name = team.Name;
             teamDto.CountryId = team.CountryId;
+        }
+    }
+
+    public async Task HandleValidSubmit()
+    {
+        var form = HttpContextAccessor.HttpContext.Request.Form;
+        var clickedButton = form["submitButton"].ToString();
+
+        if (clickedButton == "Save")
+        {
+            var team = new Team
+                {
+                    Id = TeamId,
+                    Name = teamDto.Name,
+                    CountryId = teamDto.CountryId
+                };
+
+            if (TeamId.HasValue)
+            {
+                await TeamService.UpdateAsync(team);
+            }
+            else
+            {
+                await TeamService.AddAsync(team);
+            }
+
+            if (OnSave.HasDelegate)
+            {
+                await OnSave.InvokeAsync(null);
+            }
+        }
+        else if (clickedButton == "Cancel")
+        {
+            if (OnCancel.HasDelegate)
+            {
+                await OnCancel.InvokeAsync(null);
+            }
         }
     }
 

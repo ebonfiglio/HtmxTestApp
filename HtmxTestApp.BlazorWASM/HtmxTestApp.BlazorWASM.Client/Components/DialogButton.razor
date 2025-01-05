@@ -21,20 +21,14 @@
     [Parameter]
     public string HTMLContent { get; set; }
 
-    [Parameter]
-    public EventCallback OnSave { get; set; }
-
-    [Parameter]
-    public EventCallback OnCancel { get; set; }
-
     private bool IsDialogOpen { get; set; }
 
-    private void OpenDialog()
+    public void OpenDialog()
     {
         IsDialogOpen = true;
     }
 
-    private void CloseDialog()
+    public void CloseDialog()
     {
         IsDialogOpen = false;
     }
