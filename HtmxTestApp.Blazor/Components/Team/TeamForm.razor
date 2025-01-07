@@ -7,7 +7,7 @@
 @inject ICountryService CountryService
 @inject IHttpContextAccessor HttpContextAccessor
 
-<EditForm Enhance="true" Model="@teamDto" OnValidSubmit="HandleValidSubmit" FormName="TeamForm">
+<EditForm Enhance Model="@teamDto" OnValidSubmit="HandleValidSubmit" FormName="TeamForm">
     <DataAnnotationsValidator />
     <ValidationSummary />
 

@@ -9,6 +9,7 @@
 @inject ITeamService TeamService
 @inject BlazorRenderer BlazorRenderer
 @inject IHttpContextAccessor HttpContextAccessor
+@attribute [StreamRendering]
 
 <h3>Teams</h3>
 <div class="mb-3">
@@ -18,18 +19,26 @@
 <CustomDataGrid TItem="TeamDto"
 Data="@teams"
 PageSize="5"
-ShowFilterRow="true" />
+ShowFilterRow="true" 
+Columns="gridColumns" />
 
 <DynamicFormHelper FormName="TeamForm" OnSubmit="HandleValidSubmit"></DynamicFormHelper>
 
 @code {
     string dialogHtmlContent = string.Empty;
     IEnumerable<TeamDto> teams;
+    private List<GridColumn<TeamDto>> gridColumns = new();
+
     protected override async Task OnInitializedAsync()
     {
         dialogHtmlContent = await BlazorRenderer.RenderComponent<TeamForm>();
         var result = await TeamService.GetAllAsync();
         teams = result.Select(l => new TeamDto { Id = l.Id ?? Guid.Empty, CountryId = l.CountryId, Name = l.Name }).ToList();
+        gridColumns = new List<GridColumn<TeamDto>>()
+        {
+            new GridColumn<TeamDto> { Field="Id", Title="ID", Sortable=true },
+            new GridColumn<TeamDto> { Field="Name", Title="Name", Sortable=true }
+        };
     }
 
     private async Task Save()
@@ -75,6 +84,8 @@ ShowFilterRow="true" />
         if (clickedButton == "Save")
         {
             await TeamService.AddAsync(team);
+            var result = await TeamService.GetAllAsync();
+            teams = result.Select(l => new TeamDto { Id = l.Id ?? Guid.Empty, CountryId = l.CountryId, Name = l.Name }).ToList();
         }
 
         else if (clickedButton == "Cancel")

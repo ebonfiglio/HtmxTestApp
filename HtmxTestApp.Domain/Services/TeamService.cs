@@ -46,5 +46,13 @@ namespace HtmxTestApp.Domain.Services
             Team team = await unitOfWork.TeamRepository.UpdateAsync(entity);
             return team;
         }
+
+        public async IAsyncEnumerable<Team> GetAllAsyncEnumerable()
+        {
+            await foreach (var team in unitOfWork.TeamRepository.GetAll().AsAsyncEnumerable())
+            {
+                yield return team;
+            }
+        }
     }
 }
