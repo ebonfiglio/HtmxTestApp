@@ -7,6 +7,7 @@
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using Microsoft.AspNetCore.Components.Web.HtmlRendering
 @inject ITeamService TeamService
+@inject ICountryService CountryService
 @inject BlazorRenderer BlazorRenderer
 @inject IHttpContextAccessor HttpContextAccessor
 @attribute [StreamRendering]
@@ -17,17 +18,43 @@
     <DialogButton HTMLContent="@dialogHtmlContent" />
 </div>
 <CustomDataGrid TItem="TeamDto"
-Data="@teams"
+Data="teams"
 PageSize="5"
 ShowFilterRow="true" 
 Columns="gridColumns" />
 
 <DynamicFormHelper FormName="TeamForm" OnSubmit="HandleValidSubmit"></DynamicFormHelper>
 
+<form data-enhance @formname="Test" method="post" @onsubmit="this.CreateRandomTeams">
+    <AntiforgeryToken />
+        <button type="submit" class="btn btn-primary" value="Save">Create Random Teams</button>
+    </form>
+
+
 @code {
     string dialogHtmlContent = string.Empty;
     IEnumerable<TeamDto> teams;
     private List<GridColumn<TeamDto>> gridColumns = new();
+
+    private static readonly List<string> UsCities = new()
+    {
+        "New York", "Los Angeles", "Chicago", "Houston", "Phoenix",
+        "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose",
+        "Austin", "Jacksonville", "Fort Worth", "Columbus", "Charlotte",
+        "San Francisco", "Indianapolis", "Seattle", "Denver", "Washington",
+        "Boston", "El Paso", "Nashville", "Detroit", "Oklahoma City",
+        "Las Vegas", "Louisville", "Baltimore", "Milwaukee", "Albuquerque",
+        "Tucson", "Fresno", "Sacramento", "Mesa", "Kansas City"
+    };
+    private static readonly List<string> Mascots = new()
+    {
+        "Eagles", "Tigers", "Bears", "Lions", "Wolves",
+        "Hawks", "Panthers", "Sharks", "Dragons", "Raptors",
+        "Knights", "Warriors", "Titans", "Giants", "Vikings",
+        "Falcons", "Bulldogs", "Cougars", "Mustangs", "Pirates",
+        "Spartans", "Rams", "Wildcats", "Broncos", "Buffaloes",
+        "Cardinals", "Hornets", "Jets", "Raiders", "Stallions"
+    };
 
     protected override async Task OnInitializedAsync()
     {
@@ -39,15 +66,6 @@ Columns="gridColumns" />
             new GridColumn<TeamDto> { Field="Id", Title="ID", Sortable=true },
             new GridColumn<TeamDto> { Field="Name", Title="Name", Sortable=true }
         };
-    }
-
-    private async Task Save()
-    {
-       
-    }
-
-    private void Cancel()
-    {
     }
 
     public async Task HandleValidSubmit()
@@ -90,7 +108,33 @@ Columns="gridColumns" />
 
         else if (clickedButton == "Cancel")
         {
-            
+
         }
+    }
+
+    private async Task CreateRandomTeams()
+    {
+        var random = new Random();
+        var countryResult = await CountryService.GetAllAsync();
+        var countryId = countryResult.FirstOrDefault().Id;
+
+        for (int i = 0; i < 100; i++)
+        {
+            var city = UsCities[random.Next(UsCities.Count)];
+            var mascot = Mascots[random.Next(Mascots.Count)];
+            var teamName = $"{city} {mascot}";
+
+            var team = new Team
+                {
+                    Id = Guid.NewGuid(),
+                    Name = teamName,
+                    CountryId = countryId
+                };
+
+            await TeamService.AddAsync(team);
+        }
+
+        var result = await TeamService.GetAllAsync();
+        teams = result.Select(l => new TeamDto { Id = l.Id ?? Guid.Empty, CountryId = l.CountryId, Name = l.Name }).ToList();
     }
 }

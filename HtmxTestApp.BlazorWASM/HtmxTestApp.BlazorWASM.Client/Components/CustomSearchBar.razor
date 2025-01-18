@@ -1,0 +1,46 @@
+﻿@using HtmxTestApp.Shared.Models
+@rendermode InteractiveWebAssembly
+
+<input @bind="searchText" @oninput="OnInput" placeholder="Type to search..." />
+
+<div class="search-results">
+    @foreach (var item in FilteredItems)
+    {
+        <div class="search-item" @onclick="() => SelectItem(item)">
+            @item.Text
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public IEnumerable<SearchBarItem> SearchBarItems { get; set; } = Enumerable.Empty<SearchBarItem>();
+
+    private string searchText = string.Empty;
+    private List<SearchBarItem> FilteredItems = new();
+
+    protected override void OnInitialized()
+    {
+        FilteredItems = SearchBarItems.ToList();
+    }
+
+    private void OnInput(ChangeEventArgs e)
+    {
+        searchText = e.Value?.ToString() ?? string.Empty;
+        if (string.IsNullOrEmpty(searchText))
+        {
+            FilteredItems = SearchBarItems.ToList();
+        }
+        else
+        {
+            FilteredItems = SearchBarItems
+                .Where(item => item.Text.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+    }
+
+    private void SelectItem(SearchBarItem item)
+    {
+        searchText = item.Text;
+    }
+}

@@ -27,6 +27,7 @@ namespace HtmxTestApp.Blazor.Helpers
             // static HTML renderer and return as a string
             return _htmlRenderer.Dispatcher.InvokeAsync(async () =>
             {
+                var temp = typeof(T);
                 HtmlRootComponent output = await _htmlRenderer.RenderComponentAsync<T>(parameters);
                 return output.ToHtmlString();
             });

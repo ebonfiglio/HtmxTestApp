@@ -1,0 +1,21 @@
+﻿@page "/customsearch"
+@inject ITeamService TeamService
+@using HtmxTestApp.Domain.Services.Contracts
+@using HtmxTestApp.Shared.Models
+<h3>CustomSearchPage</h3>
+
+<CustomSearchBar SearchBarItems="@SearchBarItems" />
+
+@code {
+    private List<SearchBarItem> SearchBarItems = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var teams = await TeamService.GetAllAsync();
+        SearchBarItems = teams.Select(t => new SearchBarItem
+            {
+                Value = t.Id.Value,
+                Text = t.Name
+            }).ToList();
+    }
+}

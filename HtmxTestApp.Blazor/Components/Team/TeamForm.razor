@@ -7,7 +7,7 @@
 @inject ICountryService CountryService
 @inject IHttpContextAccessor HttpContextAccessor
 
-<EditForm Enhance Model="@teamDto" OnValidSubmit="HandleValidSubmit" FormName="TeamForm">
+<EditForm Enhance="true" Model="@teamDto" OnValidSubmit="HandleValidSubmit" FormName="TeamForm">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -46,12 +46,13 @@
     public static string ModelName { get; set; } = nameof(TeamDto).ToCamelCase();
 
     [SupplyParameterFromForm]
-    private TeamDto teamDto { get; set; } = new();
+    private TeamDto teamDto { get; set; }
 
     private List<Country> countries = new();
 
     protected override async Task OnInitializedAsync()
     {
+        teamDto = new();
         countries = await CountryService.GetAllAsync();
 
         if (TeamId.HasValue)

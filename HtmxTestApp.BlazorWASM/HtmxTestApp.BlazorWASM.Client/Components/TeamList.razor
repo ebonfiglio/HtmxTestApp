@@ -2,7 +2,7 @@
 @using HtmxTestApp.Shared.Models
 @rendermode InteractiveWebAssembly
 
-<QuickGrid Items="@Teams" Pagination="@pagination">
+@* <QuickGrid Items="@Teams" Pagination="@pagination">
     <PropertyColumn Property="@(t => t.Id)" Sortable="true" />
     <TemplateColumn Title="Name" Sortable="true">
         <a href="/teamform/@context.Id">@context.Name</a>
@@ -11,11 +11,11 @@
     <TemplateColumn Title="Flag" Sortable="true">
         @((MarkupString)(context.Country?.HtmlCode ?? string.Empty))
     </TemplateColumn> *@
-</QuickGrid>
+@* </QuickGrid>
 <Paginator  State="@pagination" />
 @code {
     PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
 
     [Parameter]
     public IQueryable<TeamDto> Teams { get; set; }
-}
+}*@

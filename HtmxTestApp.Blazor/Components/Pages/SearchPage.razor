@@ -1,0 +1,15 @@
+﻿@page "/search"
+@using HtmxTestApp.Domain.Services.Contracts
+@using HtmxTestApp.Shared.Models
+@inject ITeamService TeamService
+<h3>Search</h3>
+<SearchBar SearchBarItems="@SearchBarItems" />
+
+@code {
+    private List<SearchBarItem> SearchBarItems = new();    
+    protected override async Task OnInitializedAsync()
+    {
+        var teams = await TeamService.GetAllAsync();
+        SearchBarItems = teams.Select(t => new SearchBarItem { Value = t.Id.Value, Text = t.Name }).ToList();
+    }
+}

@@ -1,0 +1,34 @@
+﻿@using HtmxTestApp.Shared.Models
+@rendermode InteractiveWebAssembly
+
+@* Required *@
+<MudThemeProvider />
+<MudPopoverProvider />
+
+@* Needed for dialogs *@
+<MudDialogProvider />
+
+@* Needed for snackbars *@
+<MudSnackbarProvider />
+
+<MudAutocomplete 
+SearchFunc="Search"
+MaxItems="10000"
+Label="Search"
+Placeholder="Type to search..."
+/>
+
+@code {
+    [Parameter]
+    public List<SearchBarItem> SearchBarItems { get; set; } = new();
+
+    private SearchBarItem selectedItem;
+
+    private async Task<IEnumerable<string>> Search(string value, CancellationToken token)
+    {
+        if (string.IsNullOrEmpty(value))
+            return SearchBarItems.Select(l => l.Text);
+
+        return SearchBarItems.Where(x => x.Text.Contains(value, StringComparison.InvariantCultureIgnoreCase)).Select(l => l.Text);
+    }
+}

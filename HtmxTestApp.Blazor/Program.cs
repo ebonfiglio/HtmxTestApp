@@ -5,6 +5,7 @@ using HtmxTestApp.Domain.Services;
 using HtmxTestApp.Domain.Services.Contracts;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
+using MudBlazor.Services;
 
 namespace HtmxTestApp.Blazor
 {
@@ -40,6 +41,8 @@ namespace HtmxTestApp.Blazor
             builder.Services.AddScoped<BlazorRenderer>();
 
             builder.Services.AddHttpContextAccessor();
+
+            builder.Services.AddMudServices();
 
             var app = builder.Build();
 
