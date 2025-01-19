@@ -6,6 +6,8 @@ namespace HtmxTestApp.DAL.Repositories
     {
         Task<T> AddAsync(T entity);
 
+        Task AddRangeAsync(IEnumerable<T> entities);
+
         Task<T> UpdateAsync(T entity);
 
         Task<T> GetByIdAsync(Guid id, bool asNoTracking = false, params Expression<Func<T, object>>[] includes);

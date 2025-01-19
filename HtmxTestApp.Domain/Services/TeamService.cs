@@ -18,6 +18,10 @@ namespace HtmxTestApp.Domain.Services
             Team team = await unitOfWork.TeamRepository.AddAsync(entity);
             return team;
         }
+        public async Task AddRangeAsync(IEnumerable<Team> teams)
+        {
+            await unitOfWork.TeamRepository.AddRangeAsync(teams);
+        }
 
         public async Task DeleteAsync(Guid id)
         {

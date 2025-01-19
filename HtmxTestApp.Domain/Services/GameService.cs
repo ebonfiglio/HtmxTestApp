@@ -19,6 +19,11 @@ namespace HtmxTestApp.Domain.Services
             return game;
         }
 
+        public async Task AddRangeAsync(IEnumerable<Game> games)
+        {
+            await unitOfWork.GameRepository.AddRangeAsync(games);
+        }
+
         public async Task DeleteAsync(Guid id)
         {
             Game game = await unitOfWork.GameRepository.GetByIdAsync(id);

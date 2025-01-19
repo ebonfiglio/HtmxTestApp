@@ -8,6 +8,7 @@ namespace HtmxTestApp.Domain.Services.Contracts
         Task<List<TEntity>> GetAllAsync();
         Task<List<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
         Task<TEntity> AddAsync(TEntity entity);
+        Task AddRangeAsync(IEnumerable<TEntity> entities);
         Task<TEntity> UpdateAsync(TEntity entity);
         Task DeleteAsync(TKey id);
     }

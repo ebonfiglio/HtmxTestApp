@@ -19,7 +19,7 @@
 </div>
 <CustomDataGrid TItem="TeamDto"
 Data="teams"
-PageSize="5"
+PageSize="20"
 ShowFilterRow="true" 
 Columns="gridColumns" />
 
@@ -29,12 +29,26 @@ Columns="gridColumns" />
     <AntiforgeryToken />
         <button type="submit" class="btn btn-primary" value="Save">Create Random Teams</button>
     </form>
+<form data-enhance @formname="TestBulk" method="post" @onsubmit="this.CreateRandomTeamsBulk">
+    <AntiforgeryToken />
+    <button type="submit" class="btn btn-primary" value="Save">Create Random Teams Bulk</button>
+</form>
 
+<form data-enhance @formname="TestDelete" method="post" @onsubmit="this.DeleteAllTeams">
+    <AntiforgeryToken />
+    <button type="submit" class="btn btn-danger" value="Save">Delete All Teams</button>
+</form>
+
+<div>
+    <h4>Performance Results</h4>
+    <p>@performanceResult</p>
+</div>
 
 @code {
     string dialogHtmlContent = string.Empty;
     IEnumerable<TeamDto> teams;
     private List<GridColumn<TeamDto>> gridColumns = new();
+    private string performanceResult = string.Empty;
 
     private static readonly List<string> UsCities = new()
     {
@@ -114,6 +128,8 @@ Columns="gridColumns" />
 
     private async Task CreateRandomTeams()
     {
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
         var random = new Random();
         var countryResult = await CountryService.GetAllAsync();
         var countryId = countryResult.FirstOrDefault().Id;
@@ -136,5 +152,53 @@ Columns="gridColumns" />
 
         var result = await TeamService.GetAllAsync();
         teams = result.Select(l => new TeamDto { Id = l.Id ?? Guid.Empty, CountryId = l.CountryId, Name = l.Name }).ToList();
+
+        stopwatch.Stop();
+        performanceResult = $"CreateRandomTeams executed in {stopwatch.ElapsedMilliseconds} ms";
+    }
+
+    private async Task CreateRandomTeamsBulk()
+    {
+        var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
+        var random = new Random();
+        var countryResult = await CountryService.GetAllAsync();
+        var countryId = countryResult.FirstOrDefault()?.Id ?? Guid.Empty;
+
+        var teamsToAdd = new List<Team>();
+
+        for (int i = 0; i < 10000; i++)
+        {
+            var city = UsCities[random.Next(UsCities.Count)];
+            var mascot = Mascots[random.Next(Mascots.Count)];
+            var teamName = $"{city} {mascot}";
+
+            var team = new Team
+                {
+                    Id = Guid.NewGuid(),
+                    Name = teamName,
+                    CountryId = countryId
+                };
+
+            teamsToAdd.Add(team);
+        }
+
+        await TeamService.AddRangeAsync(teamsToAdd);
+
+        var result = await TeamService.GetAllAsync();
+        teams = result.Select(l => new TeamDto { Id = l.Id ?? Guid.Empty, CountryId = l.CountryId, Name = l.Name }).ToList();
+
+        stopwatch.Stop();
+        performanceResult = $"CreateRandomTeamsBulk executed in {stopwatch.ElapsedMilliseconds} ms";
+    }
+
+    private async Task DeleteAllTeams()
+    {
+        //var allTeams = teams.ToHashSet();
+        foreach (var team in teams)
+        {
+            await TeamService.DeleteAsync(team.Id);
+            // teams = teams.Where(t => t.Id != team.Id);
+        }
     }
 }

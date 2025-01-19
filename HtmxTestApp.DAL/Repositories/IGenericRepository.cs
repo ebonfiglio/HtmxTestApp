@@ -22,6 +22,13 @@ namespace HtmxTestApp.DAL.Repositories
                 return result.Entity;
             }
 
+            public virtual async Task AddRangeAsync(IEnumerable<T> entities)
+            {
+                using var context = _contextFactory.CreateDbContext();
+                await context.Set<T>().AddRangeAsync(entities);
+                await context.SaveChangesAsync();
+            }
+
             public virtual async Task<T> UpdateAsync(T entity)
             {
                 using var context = _contextFactory.CreateDbContext();

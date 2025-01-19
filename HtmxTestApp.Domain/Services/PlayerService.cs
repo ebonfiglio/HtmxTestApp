@@ -20,6 +20,11 @@ namespace HtmxTestApp.Domain.Services
             return player;
         }
 
+        public async Task AddRangeAsync(IEnumerable<Player> players)
+        {
+            await unitOfWork.PlayerRepository.AddRangeAsync(players);
+        }
+
         public async Task DeleteAsync(Guid id)
         {
             Player player = await unitOfWork.PlayerRepository.GetByIdAsync(id);

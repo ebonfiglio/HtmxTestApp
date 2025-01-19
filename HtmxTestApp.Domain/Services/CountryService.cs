@@ -19,6 +19,11 @@ namespace HtmxTestApp.Domain.Services
             return country;
         }
 
+        public async Task AddRangeAsync(IEnumerable<Country> countries)
+        {
+            await unitOfWork.CountryRepository.AddRangeAsync(countries);
+        }
+
         public async Task DeleteAsync(Guid id)
         {
             Country country = await unitOfWork.CountryRepository.GetByIdAsync(id);
